@@ -61,7 +61,7 @@ export default function Services() {
         </div>
 
         {/* Left Side Content (Text) */}
-        <div className="absolute left-6 md:left-16 lg:left-32 top-1/2 -translate-y-1/2 z-30 w-full max-w-lg flex space-between">
+        <div className="absolute left-6 md:left-16 lg:left-32 top-[35%] md:top-1/2 -translate-y-1/2 z-30 w-[90%] md:w-full max-w-lg flex flex-col pointer-events-auto">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -124,7 +124,7 @@ export default function Services() {
         </div>
 
         {/* Right Side Rotating Wheel */}
-        <div className="absolute top-1/2 right-[-10%] md:right-[5%] lg:right-[15%] -translate-y-1/2 pointer-events-none z-10">
+        <div className="absolute top-[80%] md:top-1/2 right-[-25%] sm:right-[-10%] md:right-[5%] lg:right-[15%] -translate-y-1/2 pointer-events-none z-10 scale-[0.6] sm:scale-75 md:scale-100">
           <motion.div
             className="relative w-[400px] h-[400px] md:w-[500px] md:h-[500px] rounded-full border border-white/10 shadow-[inset_0_0_100px_rgba(255,255,255,0.02)]"
             style={{ rotate }}
