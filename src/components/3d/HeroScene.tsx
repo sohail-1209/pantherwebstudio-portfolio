@@ -572,7 +572,17 @@ function ShowRoomModel({ scale = 1, position = [0, 0, 0], rotation = [0, 0, 0] }
   const copiedScene = useMemo(() => {
     const clone = scene.clone();
 
-
+    // Turn off emissive lights (the bright white rings)
+    clone.traverse((child: any) => {
+      if (child.isMesh && child.material) {
+        if (child.material.emissiveIntensity !== undefined) {
+          child.material.emissiveIntensity = 0;
+        }
+        if (child.material.emissive) {
+          child.material.emissive.setHex(0x000000);
+        }
+      }
+    });
 
     // Auto-scale and center logic to ensure the model is visible regardless of its original size
     const box = new THREE.Box3().setFromObject(clone);
