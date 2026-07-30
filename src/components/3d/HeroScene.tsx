@@ -41,18 +41,18 @@ export default function HeroScene() {
         target-position={[0, -4, -10]}
         angle={0.28}
         penumbra={1}
-        intensity={8}
+        intensity={4}
         color="#e8d8ff"
         distance={50}
         castShadow={false}
       />
 
       {/* Wide purple rim fills at left/right horizon corners */}
-      <pointLight position={[-14, -2, -10]} intensity={18} color="#8800ff" distance={22} decay={1.2} />
-      <pointLight position={[14, -2, -10]} intensity={18} color="#8800ff" distance={22} decay={1.2} />
+      <pointLight position={[-14, -2, -10]} intensity={9} color="#8800ff" distance={22} decay={1.2} />
+      <pointLight position={[14, -2, -10]} intensity={9} color="#8800ff" distance={22} decay={1.2} />
       {/* Secondary softer inner fills */}
-      <pointLight position={[-7, -1, -5]} intensity={6} color="#a030ff" distance={18} decay={2} />
-      <pointLight position={[7, -1, -5]} intensity={6} color="#a030ff" distance={18} decay={2} />
+      <pointLight position={[-7, -1, -5]} intensity={3} color="#a030ff" distance={18} decay={2} />
+      <pointLight position={[7, -1, -5]} intensity={3} color="#a030ff" distance={18} decay={2} />
 
       {/* HDRI Environment — subtle */}
       <Environment preset="night" />
@@ -69,8 +69,11 @@ export default function HeroScene() {
         <Vignette eskil={false} offset={0.2} darkness={0.85} />
       </EffectComposer>
 
-      {/* ═══════════════ BACKGROUND ENVIRONMENT (REMOVED) ═══════════════ */}
+      {/* ═══════════════ 3D GRADIENT BACKGROUND (BLACK-VIOLET) ═══════════════ */}
+      <GradientBackground3D />
 
+      {/* ═══════════════ GALAXY BACKGROUND ═══════════════ */}
+      <GalaxyBackground />
 
       {/* ═══════════════ EXISTING MODELS (UNTOUCHED) ═══════════════ */}
 
@@ -94,6 +97,173 @@ export default function HeroScene() {
 
       </group>
     </>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   GALAXY BACKGROUND
+   ═══════════════════════════════════════════════════════ */
+
+function GalaxyBackground() {
+  const pointsRef = useRef<THREE.Points>(null);
+
+  const { positions, colors, sizes } = useMemo(() => {
+    const count = 4000;
+    const pos = new Float32Array(count * 3);
+    const col = new Float32Array(count * 3);
+    const sz = new Float32Array(count);
+
+    const color1 = new THREE.Color("#6b21a8"); // Purple
+    const color2 = new THREE.Color("#ffffff"); // White
+    const color3 = new THREE.Color("#d8b4fe"); // Light purple
+
+    for (let i = 0; i < count; i++) {
+      // Create a spiral shape
+      const radius = Math.random() * 35 + 2;
+      const branches = 4;
+      const branchAngle = (i % branches) * ((Math.PI * 2) / branches);
+      const spinAngle = radius * 0.3;
+
+      const randomX = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 3;
+      const randomY = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 2;
+      const randomZ = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 3;
+
+      pos[i * 3] = Math.cos(branchAngle + spinAngle) * radius + randomX;
+      pos[i * 3 + 1] = randomY - 2; 
+      pos[i * 3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ - 25;
+
+      const mixColor = Math.random();
+      const finalColor = new THREE.Color();
+      if (mixColor < 0.3) {
+        finalColor.copy(color1);
+      } else if (mixColor < 0.7) {
+        finalColor.copy(color3);
+      } else {
+        finalColor.copy(color2);
+      }
+
+      col[i * 3] = finalColor.r;
+      col[i * 3 + 1] = finalColor.g;
+      col[i * 3 + 2] = finalColor.b;
+
+      sz[i] = Math.random() * 0.12 + 0.03;
+    }
+
+    return { positions: pos, colors: col, sizes: sz };
+  }, []);
+
+  useFrame((state, delta) => {
+    if (pointsRef.current) {
+      pointsRef.current.rotation.y -= delta * 0.05;
+      pointsRef.current.rotation.z += delta * 0.01;
+    }
+  });
+
+  return (
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-color" args={[colors, 3]} />
+        <bufferAttribute attach="attributes-size" args={[sizes, 1]} />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.15}
+        vertexColors
+        transparent
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+        opacity={0.6}
+        sizeAttenuation
+      />
+    </points>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   3D GRADIENT BACKGROUND (BLACK / VIOLET SHADER)
+   ═══════════════════════════════════════════════════════ */
+
+const gradientVS = `
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+const gradientFS = `
+  uniform float uTime;
+  varying vec2 vUv;
+
+  float hash(vec2 p) {
+    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+  }
+
+  float noise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(
+      mix(hash(i + vec2(0.0, 0.0)), hash(i + vec2(1.0, 0.0)), u.x),
+      mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x),
+      u.y
+    );
+  }
+
+  void main() {
+    vec2 uv = vUv;
+    float t = uTime * 0.25;
+
+    // Organic wave motion
+    float n = noise(uv * 2.5 + t * 0.5);
+    float wave1 = sin((uv.y * 3.5 + uv.x * 1.5 + n * 1.2 + t) * 3.14159);
+    float wave2 = cos((uv.x * 4.0 - uv.y * 2.0 - n * 0.8 + t * 0.7) * 3.14159);
+
+    float band1 = wave1 * 0.5 + 0.5;
+    float band2 = wave2 * 0.5 + 0.5;
+
+    // Black, Violet, Black, Violet multi-stop color palette
+    vec3 blackDeep    = vec3(0.01, 0.00, 0.03); // Pure obsidian black
+    vec3 violetRich   = vec3(0.38, 0.06, 0.78); // Deep rich violet
+    vec3 blackMid     = vec3(0.02, 0.01, 0.05); // Mid black
+    vec3 violetBright = vec3(0.60, 0.16, 0.95); // Bright glowing electric violet
+
+    // Multi-gradient interpolation (Black -> Violet -> Black -> Violet)
+    vec3 gradient1 = mix(blackDeep, violetRich, smoothstep(0.15, 0.85, band1));
+    vec3 gradient2 = mix(blackMid, violetBright, smoothstep(0.20, 0.80, band2));
+
+    vec3 finalColor = mix(gradient1, gradient2, 0.5 + 0.5 * sin(uv.x * 3.14159 + t * 0.4));
+
+    // Smooth vignette
+    float centerDist = length(uv - vec2(0.5, 0.5));
+    float vignette = smoothstep(0.95, 0.2, centerDist);
+    finalColor *= mix(0.5, 1.0, vignette);
+
+    gl_FragColor = vec4(finalColor, 1.0);
+  }
+`;
+
+function GradientBackground3D() {
+  const matRef = useRef<THREE.ShaderMaterial>(null);
+  const uniforms = useMemo(() => ({ uTime: { value: 0.0 } }), []);
+
+  useFrame((state) => {
+    if (matRef.current) {
+      matRef.current.uniforms.uTime.value = state.clock.elapsedTime;
+    }
+  });
+
+  return (
+    <mesh position={[0, 0, -16]} scale={[65, 38, 1]}>
+      <planeGeometry args={[1, 1, 32, 32]} />
+      <shaderMaterial
+        ref={matRef}
+        vertexShader={gradientVS}
+        fragmentShader={gradientFS}
+        uniforms={uniforms}
+        depthWrite={false}
+      />
+    </mesh>
   );
 }
 

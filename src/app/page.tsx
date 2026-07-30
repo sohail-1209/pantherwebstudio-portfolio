@@ -17,7 +17,7 @@ export default function Home() {
     <>
       <Loader onComplete={() => setLoadingComplete(true)} />
       {loadingComplete && (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full overflow-x-hidden">
           <Hero />
           <Services />
           <Portfolio />
