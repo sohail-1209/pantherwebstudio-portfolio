@@ -110,7 +110,7 @@ export default function Hero() {
     >
       {/* 3D Background */}
       <div className="absolute inset-0 z-0 cursor-move cursor-none">
-        <Canvas>
+        <Canvas dpr={[1, 1.5]} gl={{ antialias: false, powerPreference: "high-performance" }}>
           <Suspense fallback={null}>
             <HeroScene />
           </Suspense>

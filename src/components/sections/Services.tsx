@@ -40,7 +40,7 @@ export default function Services() {
   const [activeIndex, setActiveIndex] = useState(6); // Default to item at 180 deg
 
   useEffect(() => {
-    return smoothProgress.onChange((v) => {
+    return smoothProgress.on("change", (v) => {
       // Calculate which item is at the left edge (180 degrees)
       const index = Math.round(6 + v * 12) % 12;
       const safeIndex = (index + 12) % 12;
