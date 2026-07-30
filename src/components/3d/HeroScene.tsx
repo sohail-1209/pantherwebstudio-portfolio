@@ -92,7 +92,7 @@ export default function HeroScene() {
       <Environment preset="night" />
 
       {/* ═══════ POST-PROCESSING ═══════ */}
-      <EffectComposer disableNormalPass multisampling={0}>
+      <EffectComposer multisampling={0}>
         <Bloom
           intensity={2.2}
           luminanceThreshold={0.04}
