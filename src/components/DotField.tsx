@@ -1,12 +1,35 @@
-// @ts-nocheck
 "use client";
 
-import { useEffect, useRef, useState, memo } from 'react';
+import React, { useEffect, useRef, useState, memo } from 'react';
 import './DotField.css';
 
 const TWO_PI = Math.PI * 2;
 
-const DotField = memo(({
+export interface DotFieldProps {
+  dotRadius?: number;
+  dotSpacing?: number;
+  cursorRadius?: number;
+  cursorForce?: number;
+  bulgeOnly?: boolean;
+  bulgeStrength?: number;
+  glowRadius?: number;
+  sparkle?: boolean;
+  waveAmplitude?: number;
+  gradientFromDark?: string;
+  gradientToDark?: string;
+  glowColorDark?: string;
+  gradientFromLight?: string;
+  gradientToLight?: string;
+  glowColorLight?: string;
+  gradientFrom?: string;
+  gradientTo?: string;
+  glowColor?: string;
+  className?: string;
+  style?: React.CSSProperties;
+  [key: string]: any;
+}
+
+const DotField = memo<DotFieldProps>(({
   dotRadius = 1.8,
   dotSpacing = 16,
   cursorRadius = 450,
@@ -22,23 +45,25 @@ const DotField = memo(({
   gradientFromLight = 'rgba(124, 58, 237, 0.65)',
   gradientToLight = 'rgba(139, 92, 246, 0.35)',
   glowColorLight = '#7c3aed',
+  gradientFrom: propGradientFrom,
+  gradientTo: propGradientTo,
+  glowColor: propGlowColor,
   className = '',
   style = {},
   ...rest
 }) => {
-  const canvasRef = useRef(null);
-  const svgRef = useRef(null);
-  const glowRef = useRef(null);
-  const dotsRef = useRef([]);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const glowRef = useRef<SVGCircleElement | null>(null);
+  const dotsRef = useRef<any[]>([]);
   const mouseRef = useRef({ x: -9999, y: -9999, prevX: -9999, prevY: -9999, speed: 0 });
-  const rafRef = useRef(null);
+  const rafRef = useRef<number | null>(null);
   const sizeRef = useRef({ w: 0, h: 0, offsetX: 0, offsetY: 0 });
   const glowOpacity = useRef(0);
   const engagement = useRef(0);
-  const propsRef = useRef({});
+  const propsRef = useRef<any>({});
   const [isLight, setIsLight] = useState(false);
 
-  // Monitor class changes on documentElement for instant theme update
   useEffect(() => {
     const checkTheme = () => {
       setIsLight(document.documentElement.classList.contains("light"));
@@ -50,15 +75,15 @@ const DotField = memo(({
     return () => observer.disconnect();
   }, []);
 
-  const gradientFrom = isLight ? gradientFromLight : gradientFromDark;
-  const gradientTo = isLight ? gradientToLight : gradientToDark;
-  const glowColor = isLight ? glowColorLight : glowColorDark;
+  const gradientFrom = propGradientFrom || (isLight ? gradientFromLight : gradientFromDark);
+  const gradientTo = propGradientTo || (isLight ? gradientToLight : gradientToDark);
+  const glowColor = propGlowColor || (isLight ? glowColorLight : glowColorDark);
 
   propsRef.current = { 
     dotRadius, dotSpacing, cursorRadius, cursorForce, bulgeOnly, 
     bulgeStrength, sparkle, waveAmplitude, gradientFrom, gradientTo 
   };
-  const rebuildRef = useRef(null);
+  const rebuildRef = useRef<(() => void) | null>(null);
   const glowIdRef = useRef(`dot-field-glow-${Math.random().toString(36).slice(2, 9)}`);
 
   useEffect(() => {
@@ -66,8 +91,10 @@ const DotField = memo(({
     const glowEl = glowRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    let resizeTimer;
+    let resizeTimer: any;
 
     function resize() {
       clearTimeout(resizeTimer);
@@ -75,7 +102,7 @@ const DotField = memo(({
     }
 
     function doResize() {
-      if (!canvas.parentElement) return;
+      if (!canvas || !canvas.parentElement || !ctx) return;
       const rect = canvas.parentElement.getBoundingClientRect();
       const w = rect.width;
       const h = rect.height;
@@ -96,7 +123,7 @@ const DotField = memo(({
       buildDots(w, h);
     }
 
-    function buildDots(w, h) {
+    function buildDots(w: number, h: number) {
       const p = propsRef.current;
       const step = p.dotRadius + p.dotSpacing;
       const cols = Math.floor(w / step);
@@ -116,7 +143,7 @@ const DotField = memo(({
       dotsRef.current = dots;
     }
 
-    function onMouseMove(e) {
+    function onMouseMove(e: MouseEvent) {
       const s = sizeRef.current;
       mouseRef.current.x = e.pageX - s.offsetX;
       mouseRef.current.y = e.pageY - s.offsetY;
@@ -138,6 +165,7 @@ const DotField = memo(({
     let frameCount = 0;
 
     function tick() {
+      if (!ctx) return;
       frameCount++;
       const dots = dotsRef.current;
       const m = mouseRef.current;
@@ -154,9 +182,9 @@ const DotField = memo(({
       glowOpacity.current += (eng - glowOpacity.current) * 0.08;
 
       if (glowEl) {
-        glowEl.setAttribute('cx', m.x);
-        glowEl.setAttribute('cy', m.y);
-        glowEl.style.opacity = glowOpacity.current;
+        glowEl.setAttribute('cx', String(m.x));
+        glowEl.setAttribute('cy', String(m.y));
+        glowEl.style.opacity = String(glowOpacity.current);
       }
 
       ctx.clearRect(0, 0, w, h);
@@ -246,7 +274,7 @@ const DotField = memo(({
     };
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       clearInterval(speedInterval);
       clearTimeout(resizeTimer);
       window.removeEventListener('resize', resize);
