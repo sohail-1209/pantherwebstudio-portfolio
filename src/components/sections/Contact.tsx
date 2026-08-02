@@ -106,8 +106,8 @@ export default function Contact() {
                   <div>
                     <h4 className="text-[var(--text-muted)] uppercase tracking-widest text-[11px] font-bold">Social Media</h4>
                     <div className="flex space-x-5 mt-1">
-                      <a href="https://instagram.com/pantherweb" target="_blank" rel="noopener noreferrer" className="text-[var(--foreground)] hover:text-[#8b5cf6] transition-all duration-300 font-medium text-xs sm:text-sm">
-                        Instagram (@pantherweb)
+                      <a href="https://instagram.com/pantherwebstudio" target="_blank" rel="noopener noreferrer" className="text-[var(--foreground)] hover:text-[#8b5cf6] transition-all duration-300 font-medium text-xs sm:text-sm">
+                        Instagram (@pantherwebstudio)
                       </a>
                       <a href="https://wa.me/919553081586" target="_blank" rel="noopener noreferrer" className="text-[var(--foreground)] hover:text-[#8b5cf6] transition-all duration-300 font-medium text-xs sm:text-sm">
                         WhatsApp

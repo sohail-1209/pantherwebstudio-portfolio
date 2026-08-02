@@ -70,7 +70,7 @@ export default function Footer() {
                 </a>
               </li>
               <li className="pt-4 flex space-x-3">
-                <a href="https://instagram.com/pantherweb" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-[var(--surface)] border border-[var(--glass-border)] flex items-center justify-center text-[var(--foreground)] hover:text-[#8b5cf6] hover:border-[#8b5cf6] transition-all" title="Instagram @pantherweb">
+                <a href="https://instagram.com/pantherwebstudio" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-[var(--surface)] border border-[var(--glass-border)] flex items-center justify-center text-[var(--foreground)] hover:text-[#8b5cf6] hover:border-[#8b5cf6] transition-all" title="Instagram @pantherwebstudio">
                   <FaInstagram />
                 </a>
                 <a href="https://wa.me/919553081586" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-[var(--surface)] border border-[var(--glass-border)] flex items-center justify-center text-[var(--foreground)] hover:text-[#8b5cf6] hover:border-[#8b5cf6] transition-all" title="WhatsApp 9553081586">
