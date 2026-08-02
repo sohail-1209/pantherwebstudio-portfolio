@@ -1,66 +1,83 @@
 import Link from "next/link";
+import Image from "next/image";
 import { FaInstagram, FaLinkedin, FaWhatsapp, FaEnvelope, FaPhone } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-black pt-16 pb-8 relative z-10">
-      <div className="container mx-auto px-6">
+    <footer className="border-t border-[var(--glass-border)] bg-[var(--background)] pt-14 pb-8 relative z-10 select-none">
+      <div className="container mx-auto px-6 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
-            <Link href="/" className="flex items-center space-x-2 mb-4 group inline-block">
-              <span className="font-bold text-2xl tracking-wider text-white">
+            <Link href="/" className="flex items-center space-x-3 mb-4 group inline-flex">
+              <div className="w-10 h-10 rounded-full overflow-hidden relative bg-[var(--logo-bg)] border border-[#8b5cf6]/50 shadow-md">
+                <Image
+                  src="/logo.png"
+                  alt="Panther Web Studio"
+                  fill
+                  sizes="40px"
+                  className="object-cover rounded-full"
+                />
+              </div>
+              <span className="font-ethno font-bold text-xl tracking-wider text-[var(--foreground)]">
                 PANTHER
               </span>
-              <span className="text-primary font-light text-2xl">WEB STUDIO</span>
+              <span className="text-[#8b5cf6] font-light text-xl">WEB STUDIO</span>
             </Link>
-            <p className="text-gray-400 max-w-sm">
-              We build premium Websites, Web Applications, PWAs and SEO optimized business solutions that grow your brand.
+            <p className="text-[var(--text-muted)] text-sm max-w-sm leading-relaxed">
+              We build high-performance Websites, Web Applications, PWAs, and SEO-optimized enterprise solutions engineered for maximum conversion.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white font-semibold mb-6">Quick Links</h4>
-            <ul className="space-y-3">
-              {["Home", "Services", "Portfolio", "Why Us", "Contact"].map((link) => (
-                <li key={link}>
+            <h4 className="text-[var(--foreground)] font-semibold text-base mb-6">Quick Links</h4>
+            <ul className="space-y-3 text-sm">
+              {[
+                { name: "Home", href: "#home" },
+                { name: "Services", href: "#services" },
+                { name: "Portfolio", href: "#portfolio" },
+                { name: "Why Us", href: "#why-us" },
+                { name: "Testimonials", href: "#testimonials" },
+                { name: "Contact", href: "#contact" },
+              ].map((link) => (
+                <li key={link.name}>
                   <Link
-                    href={`#${link.toLowerCase().replace(" ", "-")}`}
-                    className="text-gray-400 hover:text-primary transition-colors"
+                    href={link.href}
+                    className="text-[var(--text-muted)] hover:text-[#8b5cf6] transition-colors"
                   >
-                    {link}
+                    {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Contact Details */}
           <div>
-            <h4 className="text-white font-semibold mb-6">Contact</h4>
-            <ul className="space-y-4">
+            <h4 className="text-[var(--foreground)] font-semibold text-base mb-6">Contact Us</h4>
+            <ul className="space-y-4 text-sm">
               <li>
-                <a href="mailto:hello@pantherwebstudio.com" className="text-gray-400 hover:text-white flex items-center space-x-3 transition-colors">
-                  <FaEnvelope className="text-primary" />
-                  <span>hello@pantherwebstudio.com</span>
+                <a href="mailto:pantherwebstudio@gmail.com" className="text-[var(--text-muted)] hover:text-[var(--foreground)] flex items-center space-x-3 transition-colors">
+                  <FaEnvelope className="text-[#8b5cf6]" />
+                  <span>pantherwebstudio@gmail.com</span>
                 </a>
               </li>
               <li>
-                <a href="tel:+1234567890" className="text-gray-400 hover:text-white flex items-center space-x-3 transition-colors">
-                  <FaPhone className="text-primary" />
-                  <span>+1 (234) 567-890</span>
+                <a href="tel:9553081586" className="text-[var(--text-muted)] hover:text-[var(--foreground)] flex items-center space-x-3 transition-colors">
+                  <FaPhone className="text-[#8b5cf6]" />
+                  <span>+91 9553081586</span>
                 </a>
               </li>
-              <li className="pt-4 flex space-x-4">
-                <a href="#" className="w-10 h-10 rounded-full glass flex items-center justify-center text-white hover:text-primary hover:scale-110 transition-all">
+              <li className="pt-4 flex space-x-3">
+                <a href="https://instagram.com/pantherweb" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-[var(--surface)] border border-[var(--glass-border)] flex items-center justify-center text-[var(--foreground)] hover:text-[#8b5cf6] hover:border-[#8b5cf6] transition-all" title="Instagram @pantherweb">
                   <FaInstagram />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full glass flex items-center justify-center text-white hover:text-primary hover:scale-110 transition-all">
-                  <FaLinkedin />
-                </a>
-                <a href="#" className="w-10 h-10 rounded-full glass flex items-center justify-center text-white hover:text-primary hover:scale-110 transition-all">
+                <a href="https://wa.me/919553081586" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-[var(--surface)] border border-[var(--glass-border)] flex items-center justify-center text-[var(--foreground)] hover:text-[#8b5cf6] hover:border-[#8b5cf6] transition-all" title="WhatsApp 9553081586">
                   <FaWhatsapp />
+                </a>
+                <a href="mailto:pantherwebstudio@gmail.com" className="w-10 h-10 rounded-xl bg-[var(--surface)] border border-[var(--glass-border)] flex items-center justify-center text-[var(--foreground)] hover:text-[#8b5cf6] hover:border-[#8b5cf6] transition-all" title="Email">
+                  <FaEnvelope />
                 </a>
               </li>
             </ul>
@@ -68,12 +85,12 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-500 text-sm">
+        <div className="border-t border-[var(--glass-border)] pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-[var(--text-muted)]">
+          <p>
             © {new Date().getFullYear()} Panther Web Studio. All rights reserved.
           </p>
-          <p className="text-gray-500 text-sm flex items-center mt-4 md:mt-0">
-            Made with <span className="text-red-500 mx-1">❤️</span> by Panther Web Studio
+          <p className="flex items-center mt-4 md:mt-0">
+            Crafted with precision by Panther Web Studio
           </p>
         </div>
       </div>

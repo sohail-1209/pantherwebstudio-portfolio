@@ -1,178 +1,185 @@
 "use client";
 
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Globe, AppWindow, Smartphone, Layout,
   Search, Palette, ArrowDownToLine, Briefcase,
-  User, LayoutDashboard, Settings, ShoppingCart
+  User, LayoutDashboard, Settings, ShoppingCart, Sparkles,
+  ChevronLeft, ChevronRight
 } from "lucide-react";
-import BorderGlow from "../BorderGlow";
 
 const services = [
-  { name: "Website Development", icon: Globe, color: "#C084FC" },
-  { name: "Web Applications", icon: AppWindow, color: "#F472B6" },
-  { name: "PWAs", icon: Smartphone, color: "#38BDF8" },
-  { name: "Responsive Websites", icon: Layout, color: "#4ADE80" },
-  { name: "SEO Optimization", icon: Search, color: "#FBBF24" },
-  { name: "UI/UX Design", icon: Palette, color: "#F87171" },
-  { name: "Landing Pages", icon: ArrowDownToLine, color: "#818CF8" },
-  { name: "Business Websites", icon: Briefcase, color: "#34D399" },
-  { name: "Portfolio Websites", icon: User, color: "#A78BFA" },
-  { name: "Custom Dashboards", icon: LayoutDashboard, color: "#F43F5E" },
-  { name: "Admin Panels", icon: Settings, color: "#2DD4BF" },
-  { name: "E-Commerce Solutions", icon: ShoppingCart, color: "#FB923C" },
+  { name: "Website Development", icon: Globe, desc: "Custom, responsive websites built with modern frameworks for top performance." },
+  { name: "Web Applications", icon: AppWindow, desc: "Scalable, feature-rich web applications tailored to your business operations." },
+  { name: "PWAs", icon: Smartphone, desc: "Progressive web apps delivering native-like mobile experiences directly in-browser." },
+  { name: "Responsive Design", icon: Layout, desc: "Flawless layout responsiveness across all screen sizes and mobile devices." },
+  { name: "SEO Optimization", icon: Search, desc: "Technical & structural search engine optimization to boost organic rankings." },
+  { name: "UI/UX Design", icon: Palette, desc: "User-centric interface design, wireframes, and intuitive user experiences." },
+  { name: "Landing Pages", icon: ArrowDownToLine, desc: "High-converting landing pages structured for maximum marketing impact." },
+  { name: "Business Websites", icon: Briefcase, desc: "Professional corporate websites that establish trust and win clients." },
+  { name: "Portfolio Websites", icon: User, desc: "Stunning personal portfolios designed to highlight creative achievements." },
+  { name: "Custom Dashboards", icon: LayoutDashboard, desc: "Real-time data visualization dashboards tailored for quick decision making." },
+  { name: "Admin Panels", icon: Settings, desc: "Secure, role-based backend portals for managing platform content and users." },
+  { name: "E-Commerce Solutions", icon: ShoppingCart, desc: "Complete online storefronts with payment gateways, inventory, and analytics." },
 ];
 
 export default function Services() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % services.length);
+  };
 
-  const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 100 });
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + services.length) % services.length);
+  };
 
-  // The circle will rotate from 0 to -360 degrees as we scroll
-  const rotate = useTransform(smoothProgress, [0, 1], [0, -360]);
-
-  const [activeIndex, setActiveIndex] = useState(6); // Default to item at 180 deg
-
-  useEffect(() => {
-    return smoothProgress.on("change", (v) => {
-      // Calculate which item is at the left edge (180 degrees)
-      const index = Math.round(6 + v * 12) % 12;
-      const safeIndex = (index + 12) % 12;
-      setActiveIndex(safeIndex);
-    });
-  }, [smoothProgress]);
+  const rotationAngle = -activeIndex * 30;
 
   return (
-    <section ref={containerRef} id="services" className="relative h-[400vh] bg-[#030303] select-none">
+    <section id="services" className="py-14 md:py-20 relative bg-[var(--background)] select-none overflow-hidden flex flex-col justify-center items-center transition-colors duration-300">
+      {/* Background Ambient Glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] md:w-[700px] h-[550px] md:h-[700px] bg-[#8b5cf6]/10 rounded-full blur-[150px]" />
+      </div>
 
-      {/* Sticky Container */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 flex flex-col items-center text-center max-w-6xl">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col items-center mb-8 md:mb-12"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--surface)] border border-[var(--glass-border)] mb-4">
+            <Sparkles className="w-4 h-4 text-[#8b5cf6]" />
+            <span className="text-xs font-semibold tracking-wider text-[#8b5cf6] uppercase">Capabilities</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--foreground)] tracking-tight">
+            Our Core <span className="text-gradient-purple">Services</span>
+          </h2>
+          <p className="text-[var(--text-muted)] text-xs sm:text-sm md:text-base mt-3 max-w-md">
+            Use the left & right buttons or select any icon on the circle to rotate through our services.
+          </p>
+        </motion.div>
 
-        {/* Background Gradients */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[800px] h-[800px] bg-[#8B5CF6]/10 rounded-full blur-[150px]" />
-          <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-[#38BDF8]/5 rounded-full blur-[150px]" />
-        </div>
-
-        {/* Left Side Content (Text) */}
-        <div className="absolute left-6 md:left-16 lg:left-32 top-[35%] md:top-1/2 -translate-y-1/2 z-30 w-[90%] md:w-full max-w-lg flex flex-col pointer-events-auto">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
+        {/* Outer Flanking Buttons + Circle Container */}
+        <div className="relative flex items-center justify-between w-full max-w-4xl my-2">
+          
+          {/* Left Rotate Button */}
+          <button
+            onClick={handlePrev}
+            className="z-30 w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-[var(--surface)] border border-[var(--glass-border)] hover:bg-[#8b5cf6] text-[#8b5cf6] hover:text-white flex items-center justify-center transition-all duration-300 shadow-md hover:scale-110 active:scale-95 flex-shrink-0"
+            aria-label="Previous Service"
           >
-            <h2 className="font-ethno text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight tracking-wide">
-              PREMIUM <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c084fc] to-[#38bdf8]">
-                SERVICES
-              </span>
-            </h2>
-            <p className="text-lg text-gray-400 mb-12 max-w-md border-l-2 border-[#C084FC]/30 pl-4 py-1">
-              Orbiting the bleeding edge of web technology to deliver unparalleled digital experiences. Keep scrolling to explore.
-            </p>
+            <ChevronLeft className="w-6 h-6 md:w-7 md:h-7" />
+          </button>
 
-            {/* Active Item Details with BorderGlow */}
-            <div className="relative h-[160px] w-full md:w-[450px]">
-              {services.map((service, idx) => (
+          {/* Center Orbit Circle Container */}
+          <div className="relative w-[290px] h-[290px] sm:w-[380px] sm:h-[380px] md:w-[480px] md:h-[480px] flex items-center justify-center mx-auto">
+            {/* Guide Rings */}
+            <div className="absolute inset-0 rounded-full border border-[var(--glass-border)] pointer-events-none shadow-sm" />
+            <div className="absolute inset-12 sm:inset-16 rounded-full border border-dashed border-[var(--glass-border)] pointer-events-none opacity-60" />
+
+            {/* Center Active Preview Card */}
+            <div className="absolute inset-14 sm:inset-16 md:inset-20 rounded-full bg-[var(--surface)]/95 border border-[var(--glass-border)] backdrop-blur-xl shadow-[0_0_40px_rgba(0,0,0,0.1)] z-20 flex flex-col items-center justify-center p-4 sm:p-6 text-center overflow-hidden">
+              <AnimatePresence mode="wait">
                 <motion.div
-                  key={service.name}
-                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                  animate={{
-                    opacity: activeIndex === idx ? 1 : 0,
-                    y: activeIndex === idx ? 0 : 20,
-                    scale: activeIndex === idx ? 1 : 0.9,
-                    pointerEvents: activeIndex === idx ? 'auto' : 'none'
-                  }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="absolute inset-0"
+                  key={activeIndex}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex flex-col items-center max-w-[170px] sm:max-w-[220px] md:max-w-[240px]"
                 >
-                  <BorderGlow
-                    edgeSensitivity={40}
-                    glowColor="0 0 100"
-                    backgroundColor="rgba(15,15,22,0.8)"
-                    borderRadius={24}
-                    glowRadius={40}
-                    glowIntensity={0.8}
-                    coneSpread={30}
-                    animated={true}
-                    colors={[service.color, '#ffffff', service.color]}
-                    className="w-full h-full"
-                  >
-                    <div className="w-full h-full p-6 flex items-center gap-6 rounded-[24px] backdrop-blur-xl border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
-                      <div className="w-16 h-16 rounded-2xl flex-shrink-0 flex items-center justify-center shadow-lg bg-white/5 border border-white/10" style={{ boxShadow: `0 0 20px ${service.color}40` }}>
-                        <service.icon className="w-8 h-8" style={{ color: service.color }} />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-ethno text-xl md:text-2xl text-white tracking-wide">{service.name}</h3>
-                        <p className="text-sm text-gray-400 mt-2 font-sans">
-                          Bespoke solutions tailored to elevate your business in the digital landscape.
-                        </p>
-                      </div>
-                    </div>
-                  </BorderGlow>
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-2xl bg-[var(--surface-hover)] border border-[#8b5cf6]/50 shadow-md flex items-center justify-center mb-2 sm:mb-3">
+                    {(() => {
+                      const IconComponent = services[activeIndex].icon;
+                      return <IconComponent className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-[#8b5cf6]" />;
+                    })()}
+                  </div>
+                  <h3 className="text-xs sm:text-base md:text-lg font-bold text-[var(--foreground)] mb-1 sm:mb-2 leading-tight">
+                    {services[activeIndex].name}
+                  </h3>
+                  <p className="text-[10px] sm:text-[11px] md:text-xs text-[var(--text-muted)] leading-relaxed line-clamp-3">
+                    {services[activeIndex].desc}
+                  </p>
                 </motion.div>
-              ))}
+              </AnimatePresence>
             </div>
-          </motion.div>
-        </div>
 
-        {/* Right Side Rotating Wheel */}
-        <div className="absolute top-[80%] md:top-1/2 right-[-25%] sm:right-[-10%] md:right-[5%] lg:right-[15%] -translate-y-1/2 pointer-events-none z-10 scale-[0.6] sm:scale-75 md:scale-100">
-          <motion.div
-            className="relative w-[400px] h-[400px] md:w-[500px] md:h-[500px] rounded-full border border-white/10 shadow-[inset_0_0_100px_rgba(255,255,255,0.02)]"
-            style={{ rotate }}
-          >
-            {services.map((service, i) => {
-              const angle = (i * 360) / 12;
-              const radius = 50;
-              const x = `calc(${radius}% * ${Math.cos((angle * Math.PI) / 180)} + 50%)`;
-              const y = `calc(${radius}% * ${Math.sin((angle * Math.PI) / 180)} + 50%)`;
+            {/* Rotating Icons Ring */}
+            <motion.div
+              animate={{ rotate: rotationAngle }}
+              transition={{ type: "spring", stiffness: 90, damping: 18 }}
+              className="w-full h-full relative flex items-center justify-center z-10"
+            >
+              {services.map((item, index) => {
+                const baseAngle = (index * 360) / 12;
+                const isSelected = activeIndex === index;
 
-              // Un-rotate the icons so they stay perfectly upright while the wheel turns!
-              const unRotate = useTransform(rotate, (r) => -r);
-              const isActive = i === activeIndex;
-
-              return (
-                <motion.div
-                  key={i}
-                  className="absolute w-20 h-20 md:w-24 md:h-24 -ml-10 -mt-10 md:-ml-12 md:-mt-12"
-                  style={{ left: x, top: y, rotate: unRotate }}
-                >
+                return (
                   <div
-                    className={`w-full h-full rounded-full flex items-center justify-center transition-all duration-700 border ${isActive
-                        ? 'scale-125 md:scale-150 border-white/50 bg-white/10 z-20 shadow-2xl'
-                        : 'scale-100 border-white/10 bg-black/50 z-10'
-                      }`}
+                    key={item.name}
+                    className="absolute"
                     style={{
-                      backdropFilter: 'blur(12px)',
-                      boxShadow: isActive ? `0 0 40px ${service.color}60, inset 0 0 20px ${service.color}40` : 'none'
+                      transform: `rotate(${baseAngle}deg) translate(var(--radius, 195px)) rotate(-${baseAngle}deg)`,
                     }}
                   >
-                    <service.icon
-                      className="w-8 h-8 md:w-10 md:h-10 transition-colors duration-700"
-                      style={{ color: isActive ? service.color : 'rgba(255,255,255,0.2)' }}
-                    />
+                    <style jsx>{`
+                      div {
+                        --radius: 120px;
+                      }
+                      @media (min-width: 640px) {
+                        div {
+                          --radius: 155px;
+                        }
+                      }
+                      @media (min-width: 768px) {
+                        div {
+                          --radius: 195px;
+                        }
+                      }
+                    `}</style>
+                    <motion.div
+                      animate={{ rotate: -rotationAngle }}
+                      transition={{ type: "spring", stiffness: 90, damping: 18 }}
+                    >
+                      <button
+                        onClick={() => setActiveIndex(index)}
+                        className={`w-9 h-9 sm:w-11 sm:h-11 md:w-13 md:h-13 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                          isSelected
+                            ? "bg-[#8b5cf6] text-white border-2 border-[#a78bfa] shadow-[0_0_25px_rgba(139,92,246,0.6)] scale-125"
+                            : "bg-[var(--surface)] text-[var(--text-muted)] border border-[var(--glass-border)] hover:bg-[#8b5cf6] hover:text-white"
+                        }`}
+                        aria-label={`Select ${item.name}`}
+                      >
+                        <item.icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+                      </button>
+                    </motion.div>
                   </div>
-                </motion.div>
-              );
-            })}
+                );
+              })}
+            </motion.div>
+          </div>
 
-            {/* Center Orbital Core */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full border border-white/5 flex items-center justify-center">
-              <div className="w-40 h-40 rounded-full border border-white/10 flex items-center justify-center bg-black/40 backdrop-blur-md">
-                <div className="w-16 h-16 rounded-full border border-primary/30 flex items-center justify-center">
-                  <div className="w-4 h-4 bg-primary rounded-full animate-pulse shadow-[0_0_30px_#8B5CF6]" />
-                </div>
-              </div>
-            </div>
-          </motion.div>
+          {/* Right Rotate Button */}
+          <button
+            onClick={handleNext}
+            className="z-30 w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-[var(--surface)] border border-[var(--glass-border)] hover:bg-[#8b5cf6] text-[#8b5cf6] hover:text-white flex items-center justify-center transition-all duration-300 shadow-md hover:scale-110 active:scale-95 flex-shrink-0"
+            aria-label="Next Service"
+          >
+            <ChevronRight className="w-6 h-6 md:w-7 md:h-7" />
+          </button>
+        </div>
+
+        {/* Service Counter Indicator */}
+        <div className="mt-4 z-30">
+          <span className="text-xs font-mono text-[var(--text-muted)] px-4 py-1.5 rounded-full bg-[var(--surface)] border border-[var(--glass-border)]">
+            Service {activeIndex + 1} of {services.length}
+          </span>
         </div>
 
       </div>

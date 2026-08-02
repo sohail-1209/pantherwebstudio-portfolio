@@ -1,177 +1,185 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
-import HeroScene from "@/components/3d/HeroScene";
-import { Suspense } from "react";
-import { Globe, Code, Smartphone, LineChart, PenTool, ShieldCheck } from "lucide-react";
-import BorderGlow from "../BorderGlow";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-
-const FloatingCard = ({ icon: Icon, title, desc, initX, initY, rotY, zValue, amp, dur }: any) => (
-  <motion.div
-    initial={{
-      opacity: 0,
-      x: initX,
-      y: initY,
-      z: zValue * 1000,
-      rotateY: rotY,
-      rotateZ: 0
-    }}
-    animate={{
-      opacity: 1,
-      x: initX,
-      y: [initY - amp, initY + amp, initY - amp],
-      z: zValue * 1000,
-      rotateY: rotY,
-      rotateZ: [-1, 1, -1]
-    }}
-    transition={{
-      opacity: { duration: 0.8 },
-      y: { duration: dur, repeat: Infinity, ease: "easeInOut" },
-      rotateZ: { duration: dur * 1.2, repeat: Infinity, ease: "easeInOut" }
-    }}
-    className="absolute left-1/2 top-1/2 pointer-events-auto cursor-pointer"
-    style={{
-      marginLeft: -90,
-      marginTop: -38,
-      transformStyle: "preserve-3d",
-      width: "180px",
-      height: "76px",
-    }}
-  >
-    <BorderGlow
-      edgeSensitivity={30}
-      glowColor="40 80 80"
-      backgroundColor="rgba(18,18,28,0.45)"
-      borderRadius={20}
-      glowRadius={40}
-      glowIntensity={1}
-      coneSpread={25}
-      animated={false}
-      colors={['#c084fc', '#f472b6', '#38bdf8']}
-      className="w-full h-full"
-    >
-      <div
-        className="flex items-center justify-start w-full h-full overflow-hidden"
-        style={{
-          padding: "12px",
-          gap: "10px",
-          borderRadius: "20px",
-          backdropFilter: "blur(18px)",
-          WebkitBackdropFilter: "blur(18px)",
-          boxShadow: "0 0 20px rgba(165,95,255,0.15), inset 0 0 0 1px rgba(255,255,255,0.04)"
-        }}
-      >
-        <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "rgba(140,90,255,0.12)", border: "1px solid rgba(170,120,255,0.25)" }} className="flex-shrink-0 flex items-center justify-center">
-          <Icon className="w-4 h-4 text-[#C084FC]" />
-        </div>
-        <div className="flex flex-col flex-1 overflow-hidden">
-          <h3 className="font-ethno truncate" style={{ fontSize: "10px", color: "#F5F5F7", lineHeight: 1.2 }}>{title}</h3>
-          <p className="truncate" style={{ fontSize: "10px", color: "rgba(255,255,255,0.55)", marginTop: "4px", lineHeight: 1.2 }}>{desc}</p>
-        </div>
-      </div>
-    </BorderGlow>
-  </motion.div>
-);
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { 
+  Globe, ArrowRight, Sparkles, Zap, Layers 
+} from "lucide-react";
+import SpecularButton from "@/components/SpecularButton";
+import DotField from "@/components/DotField";
 
 export default function Hero() {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
-  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
   return (
     <section
       id="home"
-      className="relative w-full h-screen overflow-hidden bg-black select-none"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      className="relative min-h-[90vh] w-full flex items-center justify-center overflow-hidden bg-[var(--background)] pt-24 pb-12 select-none transition-colors duration-300"
     >
-      {/* 3D Background */}
-      <div className="absolute inset-0 z-0 cursor-move cursor-none">
-        <Canvas dpr={[1, 1.5]} gl={{ antialias: false, powerPreference: "high-performance" }}>
-          <Suspense fallback={null}>
-            <HeroScene />
-          </Suspense>
-        </Canvas>
+      {/* Interactive Light-Colored DotField Canvas Background */}
+      <div className="absolute inset-0 pointer-events-none opacity-65 z-0">
+        <DotField
+          dotRadius={1.8}
+          dotSpacing={18}
+          cursorRadius={450}
+          bulgeStrength={55}
+          glowRadius={180}
+          sparkle={true}
+          waveAmplitude={1.2}
+        />
       </div>
 
-      {/* Floating Logo Overlay & Absolute Precision Cards - CSS 3D Parallax */}
-      <motion.div
-        className="absolute inset-0 z-10 pointer-events-none"
-        style={{
-          rotateX,
-          rotateY,
-          transformStyle: "preserve-3d",
-          perspective: 1500
-        }}
-      >
+      {/* Ambient Light Orbs */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[650px] h-[650px] bg-[#8b5cf6]/20 rounded-full blur-[140px] animate-pulse" />
+        <div className="absolute top-1/3 -left-32 w-[450px] h-[450px] bg-[#7c3aed]/15 rounded-full blur-[120px]" />
+        <div className="absolute bottom-10 -right-32 w-[500px] h-[500px] bg-[#6d28d9]/15 rounded-full blur-[130px]" />
+      </div>
 
-        {/* Absolutely Positioned Cards container (Hidden on mobile) */}
-        <div className="hidden lg:block absolute inset-2" style={{ transformStyle: "preserve-3d" }}>
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 max-w-7xl">
+        {/* Main Grid: Text on Left, Logo Showcase on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
+          
+          {/* Left Column: Text & CTAs */}
+          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left">
+            {/* Announcement Pill */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--surface)]/80 backdrop-blur-xl border border-[var(--glass-border)] shadow-[0_0_20px_rgba(139,92,246,0.15)] mb-6"
+            >
+              <Sparkles className="w-4 h-4 text-[#8b5cf6]" />
+              <span className="text-xs md:text-sm font-medium text-[var(--text-muted)]">
+                Next-Generation Web Development Agency
+              </span>
+            </motion.div>
 
-          {/* Left Column */}
-          <FloatingCard icon={Globe} title="Web Design" desc="Amazing experiences that resonate." initX={-290} initY={-110} rotY={8} zValue={-0.15} amp={8} dur={3.2} />
-          <FloatingCard icon={Code} title="Web Apps" desc="Powerful applications built for speed." initX={-260} initY={-20} rotY={6} zValue={0} amp={6} dur={2.8} />
-          <FloatingCard icon={Smartphone} title="Web Development" desc="Fast, scalable solutions." initX={-240} initY={80} rotY={5} zValue={0.12} amp={10} dur={3.5} />
+            {/* Main Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[var(--foreground)] leading-[1.1]"
+            >
+              Architecting High-Speed <br />
+              <span className="text-gradient-purple">Digital Experiences</span>
+            </motion.h1>
 
-          {/* Right Column (Mirrored) */}
-          <FloatingCard icon={LineChart} title="SEO Optimization" desc="Rank higher on search engines." initX={290} initY={-110} rotY={-8} zValue={0.08} amp={7} dur={3.1} />
-          <FloatingCard icon={PenTool} title="UI/UX Design" desc="Intuitive user experiences." initX={260} initY={-20} rotY={-6} zValue={-0.05} amp={9} dur={2.9} />
-          <FloatingCard icon={ShieldCheck} title="Maintenance" desc="We keep your site secure." initX={245} initY={80} rotY={-5} zValue={0.15} amp={8} dur={3.3} />
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="mt-5 text-base sm:text-lg md:text-xl text-[var(--text-muted)] max-w-2xl leading-relaxed"
+            >
+              We design & build ultra-responsive websites, web applications, and enterprise digital solutions crafted exclusively with performance, SEO, and aesthetics in mind.
+            </motion.p>
+
+            {/* Specular Light Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full sm:w-auto"
+            >
+              <SpecularButton
+                size="lg"
+                radius={18}
+                tint="#8b5cf6"
+                tintOpacity={0.25}
+                blur={0}
+                textColor="#ffffff"
+                lineColor="#a78bfa"
+                baseColor="#7c3aed"
+                intensity={1}
+                shineSize={12}
+                shineFade={45}
+                thickness={1.2}
+                speed={0.35}
+                followMouse
+                proximity={250}
+                autoAnimate={false}
+                href="#portfolio"
+              >
+                <span>View Our Work</span>
+                <ArrowRight className="w-4 h-4 text-white" />
+              </SpecularButton>
+
+              <SpecularButton
+                size="lg"
+                radius={18}
+                tint="#ffffff"
+                tintOpacity={0}
+                blur={0}
+                textColor="var(--foreground)"
+                lineColor="#8b5cf6"
+                baseColor="var(--surface)"
+                intensity={1}
+                shineSize={10}
+                shineFade={40}
+                thickness={1}
+                speed={0.35}
+                followMouse
+                proximity={250}
+                autoAnimate={false}
+                href="#contact"
+              >
+                <span>Get Started</span>
+              </SpecularButton>
+            </motion.div>
+          </div>
+
+          {/* Right Column: Central Logo Glass Showcase with var(--logo-bg) Background */}
+          <div className="lg:col-span-5 flex items-center justify-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.9, delay: 0.3 }}
+              className="relative flex items-center justify-center my-2 lg:my-0"
+            >
+              <div className="absolute inset-0 bg-[#8b5cf6]/25 rounded-full blur-3xl animate-pulse" />
+              <div className="relative w-52 h-52 sm:w-60 sm:h-60 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-full border-2 border-[#8b5cf6]/50 p-3 shadow-[0_0_40px_rgba(139,92,246,0.35)]">
+                <div className="w-full h-full rounded-full border border-dashed border-[#8b5cf6]/60 animate-[spin_20s_linear_infinite] p-3" />
+                {/* Logo background adapts smoothly with var(--logo-bg) */}
+                <div className="absolute inset-4 rounded-full overflow-hidden bg-[var(--logo-bg)] backdrop-blur-xl border border-[rgba(167,139,250,0.4)] shadow-[0_0_30px_rgba(139,92,246,0.4)] flex items-center justify-center transition-colors duration-300">
+                  <Image
+                    src="/logo.png"
+                    alt="Panther Web Studio Logo"
+                    fill
+                    sizes="(max-width: 768px) 200px, 280px"
+                    className="object-cover p-2 rounded-full"
+                    priority
+                  />
+                </div>
+              </div>
+            </motion.div>
+          </div>
 
         </div>
 
-        {/* Center Logo */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto" style={{ transformStyle: "preserve-3d" }}>
-          <motion.div
-            className="relative w-56 h-56 md:w-72 md:h-72 flex flex-shrink-0 items-center justify-center"
-            initial={{ z: 0 }}
-            animate={{ y: [-10, 10, -10], z: 50 }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            style={{ transformStyle: "preserve-3d" }}
-          >
-            {/* Logo Background Glow */}
-            <div className="absolute inset-0 bg-[#8B5CF6]/30 rounded-full blur-2xl animate-pulse"></div>
-
-            {/* Spinning Neon Ring */}
-            <div className="absolute inset-0 rounded-full border-[3px] border-[#C084FC]/80 shadow-[0_0_20px_#C084FC] animate-[spin_8s_linear_infinite]">
-              {/* Orbital tracking dots */}
-              <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rounded-full shadow-[0_0_15px_white]"></div>
-              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#C084FC] rounded-full shadow-[0_0_10px_#C084FC]"></div>
+        {/* Feature Glass Cards Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="mt-12 sm:mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 w-full"
+        >
+          {[
+            { icon: Zap, title: "Blazing Fast", desc: "Optimized for 99+ Lighthouse" },
+            { icon: Layers, title: "Modern Tech", desc: "React, Next.js, TypeScript" },
+            { icon: Globe, title: "SEO-Ready", desc: "Built for top Google rankings" },
+            { icon: Sparkles, title: "Tailored UI", desc: "Award-worthy aesthetics" },
+          ].map((item, idx) => (
+            <div
+              key={idx}
+              className="flex flex-col items-center p-4 sm:p-5 rounded-2xl bg-[var(--surface)]/75 backdrop-blur-xl border border-[var(--glass-border)] hover:border-[#8b5cf6]/50 shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_15px_35px_rgba(139,92,246,0.2)] transition-all duration-300 hover:-translate-y-1"
+            >
+              <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#8b5cf6] mb-2" />
+              <h3 className="text-xs sm:text-sm font-bold text-[var(--foreground)]">{item.title}</h3>
+              <p className="text-[11px] sm:text-xs text-[var(--text-muted)] mt-1 text-center leading-relaxed">{item.desc}</p>
             </div>
-
-            {/* Actual Logo Image */}
-            <img
-              src="/logo.jpeg"
-              alt="Panther Logo"
-              className="relative z-10 w-[95%] h-[95%] object-cover rounded-full drop-shadow-[0_0_15px_rgba(139,92,246,0.6)]"
-            />
-          </motion.div>
-        </div>
-
-      </motion.div>
+          ))}
+        </motion.div>
+      </div>
     </section>
   );
 }

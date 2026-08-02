@@ -1,9 +1,12 @@
+"use client";
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "react-hot-toast";
+import { Sparkles, Send, Mail, Phone, Globe } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -21,18 +24,17 @@ export default function Contact() {
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500));
     console.log(data);
     toast.success("Message sent successfully! We'll get back to you soon.", {
       style: {
-        background: 'rgba(18,18,28,0.9)',
-        color: '#fff',
-        border: '1px solid rgba(180,140,255,0.4)',
+        background: 'var(--surface)',
+        color: 'var(--foreground)',
+        border: '1px solid var(--glass-border)',
         backdropFilter: 'blur(10px)',
       },
       iconTheme: {
-        primary: '#C084FC',
+        primary: '#8b5cf6',
         secondary: '#fff',
       },
     });
@@ -41,116 +43,140 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-32 relative bg-black select-none">
-      <div className="container mx-auto px-6 relative z-10 max-w-7xl">
-        
-        <div className="flex flex-col lg:flex-row gap-16 items-center">
+    <section id="contact" className="py-14 md:py-20 relative bg-[var(--background)] select-none overflow-hidden">
+      {/* Background Ambient Glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-[#8b5cf6]/10 rounded-full blur-[160px]" />
+      </div>
+
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 max-w-7xl">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
           
-          {/* Left Text / Info */}
+          {/* Left Text / Contact Info */}
           <div className="w-full lg:w-1/2">
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
+              initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white tracking-tight">
-                Let's build something <span className="text-[#C084FC]">amazing.</span>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--surface)]/80 backdrop-blur-xl border border-[var(--glass-border)] mb-4">
+                <Sparkles className="w-4 h-4 text-[#8b5cf6]" />
+                <span className="text-xs font-semibold tracking-wider text-[#8b5cf6] uppercase">Contact Us</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-6 text-[var(--foreground)] tracking-tight">
+                Let's build something <span className="text-gradient-purple">extraordinary.</span>
               </h2>
-              <p className="text-[rgba(255,255,255,0.55)] text-lg mb-12 max-w-md leading-relaxed">
-                Ready to take your digital presence to the next level? Drop us a message and we'll start the conversation.
+              <p className="text-[var(--text-muted)] text-sm sm:text-base md:text-lg mb-10 max-w-md leading-relaxed">
+                Ready to elevate your digital presence with high performance and award-winning design? Get in touch today.
               </p>
               
-              <div className="space-y-8">
-                <div>
-                  <h4 className="text-[rgba(255,255,255,0.4)] uppercase tracking-widest text-xs font-bold mb-2">Email</h4>
-                  <a href="mailto:hello@pantherwebstudio.com" className="text-xl text-white hover:text-[#C084FC] transition-colors font-medium">
-                    hello@pantherwebstudio.com
-                  </a>
+              <div className="space-y-6 sm:space-y-8">
+                {/* Email */}
+                <div className="flex items-center gap-4">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-[var(--surface)] border border-[var(--glass-border)] flex items-center justify-center text-[#8b5cf6] shadow-sm">
+                    <Mail className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-[var(--text-muted)] uppercase tracking-widest text-[11px] font-bold">Email Us</h4>
+                    <a href="mailto:pantherwebstudio@gmail.com" className="text-base sm:text-lg md:text-xl text-[var(--foreground)] hover:text-[#8b5cf6] transition-colors font-medium">
+                      pantherwebstudio@gmail.com
+                    </a>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-[rgba(255,255,255,0.4)] uppercase tracking-widest text-xs font-bold mb-2">Phone</h4>
-                  <a href="tel:+1234567890" className="text-xl text-white hover:text-[#C084FC] transition-colors font-medium">
-                    +1 (234) 567-890
-                  </a>
+
+                {/* Mobile */}
+                <div className="flex items-center gap-4">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-[var(--surface)] border border-[var(--glass-border)] flex items-center justify-center text-[#8b5cf6] shadow-sm">
+                    <Phone className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-[var(--text-muted)] uppercase tracking-widest text-[11px] font-bold">Call / WhatsApp</h4>
+                    <a href="tel:9553081586" className="text-base sm:text-lg md:text-xl text-[var(--foreground)] hover:text-[#8b5cf6] transition-colors font-medium">
+                      +91 9553081586
+                    </a>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-[rgba(255,255,255,0.4)] uppercase tracking-widest text-xs font-bold mb-3">Socials</h4>
-                  <div className="flex space-x-6">
-                    <a href="#" className="text-white/70 hover:text-[#C084FC] hover:-translate-y-1 transition-all duration-300 font-medium">Instagram</a>
-                    <a href="#" className="text-white/70 hover:text-[#C084FC] hover:-translate-y-1 transition-all duration-300 font-medium">LinkedIn</a>
-                    <a href="#" className="text-white/70 hover:text-[#C084FC] hover:-translate-y-1 transition-all duration-300 font-medium">WhatsApp</a>
+
+                {/* Socials */}
+                <div className="flex items-center gap-4">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-[var(--surface)] border border-[var(--glass-border)] flex items-center justify-center text-[#8b5cf6] shadow-sm">
+                    <Globe className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-[var(--text-muted)] uppercase tracking-widest text-[11px] font-bold">Social Media</h4>
+                    <div className="flex space-x-5 mt-1">
+                      <a href="https://instagram.com/pantherweb" target="_blank" rel="noopener noreferrer" className="text-[var(--foreground)] hover:text-[#8b5cf6] transition-all duration-300 font-medium text-xs sm:text-sm">
+                        Instagram (@pantherweb)
+                      </a>
+                      <a href="https://wa.me/919553081586" target="_blank" rel="noopener noreferrer" className="text-[var(--foreground)] hover:text-[#8b5cf6] transition-all duration-300 font-medium text-xs sm:text-sm">
+                        WhatsApp
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
             </motion.div>
           </div>
 
-          {/* Right Form */}
+          {/* Right Glass Form */}
           <div className="w-full lg:w-1/2">
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="p-8 md:p-12 rounded-[30px] relative overflow-hidden"
-              style={{
-                background: "rgba(18,18,28,0.45)",
-                border: "1px solid rgba(180,140,255,0.22)",
-                backdropFilter: "blur(18px)",
-                WebkitBackdropFilter: "blur(18px)",
-                boxShadow: "0 0 30px rgba(165,95,255,0.1), inset 0 0 0 1px rgba(255,255,255,0.02)"
-              }}
+              className="p-7 sm:p-10 md:p-12 rounded-3xl bg-[var(--surface)]/75 backdrop-blur-xl border border-[var(--glass-border)] shadow-[0_15px_40px_rgba(0,0,0,0.15)]"
             >
-              <h3 className="text-3xl font-bold text-white mb-8">Send us a message</h3>
+              <h3 className="text-2xl sm:text-3xl font-bold text-[var(--foreground)] mb-6 sm:mb-8">Send us a message</h3>
               
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <div className="relative group">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 sm:space-y-6">
+                <div>
                   <input 
                     {...register("name")}
                     type="text" 
                     placeholder="Your Name" 
-                    className="w-full bg-[rgba(255,255,255,0.03)] border-b-2 border-white/10 rounded-t-xl px-6 py-4 text-white placeholder-white/30 focus:outline-none transition-colors"
+                    className="w-full bg-[var(--background)]/80 backdrop-blur-xl border border-[var(--glass-border)] rounded-xl px-5 py-3.5 sm:py-4 text-[var(--foreground)] placeholder-[var(--text-muted)]/60 focus:outline-none focus:border-[#8b5cf6] transition-colors text-sm sm:text-base"
                   />
-                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-[#C084FC] transition-all duration-300 group-focus-within:w-full shadow-[0_0_10px_#C084FC]" />
-                  {errors.name && <p className="text-red-400 text-sm mt-2 ml-2">{errors.name.message}</p>}
+                  {errors.name && <p className="text-red-400 text-xs mt-2 ml-1">{errors.name.message}</p>}
                 </div>
                 
-                <div className="relative group">
+                <div>
                   <input 
                     {...register("email")}
                     type="email" 
-                    placeholder="Your Email" 
-                    className="w-full bg-[rgba(255,255,255,0.03)] border-b-2 border-white/10 rounded-t-xl px-6 py-4 text-white placeholder-white/30 focus:outline-none transition-colors"
+                    placeholder="Your Email Address" 
+                    className="w-full bg-[var(--background)]/80 backdrop-blur-xl border border-[var(--glass-border)] rounded-xl px-5 py-3.5 sm:py-4 text-[var(--foreground)] placeholder-[var(--text-muted)]/60 focus:outline-none focus:border-[#8b5cf6] transition-colors text-sm sm:text-base"
                   />
-                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-[#C084FC] transition-all duration-300 group-focus-within:w-full shadow-[0_0_10px_#C084FC]" />
-                  {errors.email && <p className="text-red-400 text-sm mt-2 ml-2">{errors.email.message}</p>}
+                  {errors.email && <p className="text-red-400 text-xs mt-2 ml-1">{errors.email.message}</p>}
                 </div>
                 
-                <div className="relative group">
+                <div>
                   <textarea 
                     {...register("message")}
-                    placeholder="Tell us about your project..." 
+                    placeholder="Tell us about your project or inquiry..." 
                     rows={4}
-                    className="w-full bg-[rgba(255,255,255,0.03)] border-b-2 border-white/10 rounded-t-xl px-6 py-4 text-white placeholder-white/30 focus:outline-none transition-colors resize-none"
+                    className="w-full bg-[var(--background)]/80 backdrop-blur-xl border border-[var(--glass-border)] rounded-xl px-5 py-3.5 sm:py-4 text-[var(--foreground)] placeholder-[var(--text-muted)]/60 focus:outline-none focus:border-[#8b5cf6] transition-colors resize-none text-sm sm:text-base"
                   />
-                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-[#C084FC] transition-all duration-300 group-focus-within:w-full shadow-[0_0_10px_#C084FC]" />
-                  {errors.message && <p className="text-red-400 text-sm mt-2 ml-2">{errors.message.message}</p>}
+                  {errors.message && <p className="text-red-400 text-xs mt-2 ml-1">{errors.message.message}</p>}
                 </div>
                 
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-[#8B5CF6] to-[#C084FC] hover:opacity-90 text-white font-bold py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(165,95,255,0.3)] disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center mt-4"
+                  className="w-full bg-gradient-to-r from-[#7c3aed] to-[#8b5cf6] hover:shadow-[0_0_25px_rgba(139,92,246,0.5)] text-white font-semibold py-4 rounded-xl transition-all shadow-[0_0_15px_rgba(139,92,246,0.3)] disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2 mt-2"
                 >
                   {isSubmitting ? (
                     <motion.div 
-                      className="w-6 h-6 border-2 border-white border-t-transparent rounded-full"
+                      className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                     />
                   ) : (
-                    "Send Message"
+                    <>
+                      <span>Send Message</span>
+                      <Send className="w-4 h-4" />
+                    </>
                   )}
                 </button>
               </form>

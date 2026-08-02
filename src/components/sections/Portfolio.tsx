@@ -1,62 +1,174 @@
 "use client";
 
-import { motion } from "framer-motion";
-import CircularGallery from "../CircularGallery";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ExternalLink, Sparkles } from "lucide-react";
+
+const categories = ["All", "Web App", "Business"];
 
 const projects = [
-  { id: 1, title: "Restaurant Website", category: "E-Commerce", color: "from-orange-500 to-red-500" },
-  { id: 2, title: "Hospital Website", category: "Web App", color: "from-blue-500 to-cyan-500" },
-  { id: 3, title: "Construction Website", category: "Business", color: "from-yellow-500 to-orange-500" },
-  { id: 4, title: "Real Estate Website", category: "Landing Page", color: "from-green-500 to-emerald-500" },
-  { id: 5, title: "Portfolio Website", category: "Personal", color: "from-purple-500 to-pink-500" },
-  { id: 6, title: "Tech Dashboard", category: "Admin Panel", color: "from-indigo-500 to-purple-500" },
+  {
+    id: 1,
+    title: "QuikDen - Room & Flatmate Finder",
+    category: "Web App",
+    description: "India's fastest growing room finder platform connecting users with verified rentals, shared rooms, hostels, and flatmates with zero broker fees.",
+    image: "/quikden.png",
+    link: "https://quikden.in",
+    tags: ["Next.js", "React", "Node.js", "Tailwind CSS"],
+  },
+  {
+    id: 2,
+    title: "Aura Salon & Beauty Studio",
+    category: "Business",
+    description: "Luxury salon & beauty studio web application featuring treatment showcases, online appointment booking, and premium aesthetics.",
+    image: "/aura-salon.png",
+    link: "https://maseerareem.github.io/aura-salon",
+    tags: ["HTML5", "CSS3", "JavaScript", "Responsive"],
+  },
 ];
 
 export default function Portfolio() {
-  const galleryItems = projects.map((p) => ({
-    image: `https://picsum.photos/seed/${p.id + 20}/800/600?grayscale`,
-    text: p.title
-  }));
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  const filteredProjects = activeCategory === "All"
+    ? projects
+    : projects.filter((p) => p.category === activeCategory);
 
   return (
-    <section id="portfolio" className="relative h-screen bg-black select-none overflow-hidden flex flex-col">
-      {/* Background Overlay */}
-      <div className="absolute inset-0 bg-black/50 pointer-events-none z-0" />
-
-      {/* Section Header */}
-      <div className="absolute top-12 md:top-24 left-6 md:left-24 z-10 pointer-events-none">
-        <motion.h2
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="font-ethno text-3xl md:text-6xl text-white tracking-tight"
-        >
-          Selected <span className="text-[#C084FC]">Works</span>
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="text-[rgba(255,255,255,0.55)] mt-2 md:mt-4 text-sm md:text-lg max-w-xs md:max-w-sm"
-        >
-          Swipe or drag to explore our premium digital experiences.
-        </motion.p>
+    <section id="portfolio" className="py-14 md:py-20 relative bg-[var(--background)] select-none overflow-hidden transition-colors duration-300">
+      {/* Background Ambient Glows */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 -right-40 w-[600px] h-[600px] bg-[#8b5cf6]/10 rounded-full blur-[160px]" />
+        <div className="absolute bottom-10 -left-40 w-[600px] h-[600px] bg-[#6d28d9]/10 rounded-full blur-[160px]" />
       </div>
 
-      {/* Circular Gallery Container */}
-      <div className="relative flex-1 w-full h-full pt-16 z-10">
-        <CircularGallery
-          items={galleryItems}
-          bend={1.5}
-          textColor="#ffffff"
-          borderRadius={0.05}
-          scrollEase={0.05}
-          font="30px 'ethnocentric-rg'"
-          fontUrl="/ethnocentric-rg.ttf"
-          scrollSpeed={2.5}
-        />
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 max-w-7xl">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-6">
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--surface)] border border-[var(--glass-border)] mb-4"
+            >
+              <Sparkles className="w-4 h-4 text-[#8b5cf6]" />
+              <span className="text-xs font-semibold tracking-wider text-[#8b5cf6] uppercase">Our Work</span>
+            </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--foreground)] tracking-tight"
+            >
+              Featured <span className="text-gradient-purple">Projects</span>
+            </motion.h2>
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-[var(--text-muted)] text-sm md:text-base max-w-md leading-relaxed"
+          >
+            Explore our featured client applications built for high performance, verified user trust, and real business scaling.
+          </motion.p>
+        </div>
+
+        {/* Category Filter Glass Tabs */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex flex-wrap items-center gap-2.5 sm:gap-3 mb-10"
+        >
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 ${
+                activeCategory === cat
+                  ? "bg-gradient-to-r from-[#7c3aed] to-[#8b5cf6] text-white shadow-[0_0_20px_rgba(139,92,246,0.4)]"
+                  : "bg-[var(--surface)] text-[var(--text-muted)] border border-[var(--glass-border)] hover:bg-[#8b5cf6] hover:text-white"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </motion.div>
+
+        {/* Glass Project Cards Grid - 2 Featured Projects */}
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project) => (
+              <motion.div
+                layout
+                key={project.id}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.4 }}
+                className="group relative rounded-2xl overflow-hidden bg-[var(--surface)]/75 backdrop-blur-xl border border-[var(--glass-border)] hover:border-[#8b5cf6]/50 shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_15px_40px_rgba(139,92,246,0.2)] transition-all duration-500 flex flex-col hover:-translate-y-1"
+              >
+                {/* Image Container */}
+                <div className="relative h-60 sm:h-64 w-full overflow-hidden bg-[var(--background)]">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface)] via-transparent to-transparent opacity-80" />
+                  
+                  {/* Category Tag */}
+                  <span className="absolute top-4 left-4 px-3.5 py-1 rounded-full bg-[var(--surface)]/90 backdrop-blur-xl border border-[var(--glass-border)] text-xs font-semibold text-[#8b5cf6]">
+                    {project.category}
+                  </span>
+                </div>
+
+                {/* Content */}
+                <div className="p-6 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold text-[var(--foreground)] group-hover:text-[#8b5cf6] transition-colors duration-300">
+                      {project.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-2.5 leading-relaxed">
+                      {project.description}
+                    </p>
+                  </div>
+
+                  {/* Tech Tags & Live Link */}
+                  <div className="mt-6 pt-4 border-t border-[var(--glass-border)] flex items-center justify-between">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {project.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2.5 py-1 rounded-md bg-[var(--surface-hover)] border border-[var(--glass-border)] text-[11px] font-medium text-[#8b5cf6]"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    {project.link && (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-full bg-[#8b5cf6] text-white flex items-center justify-center transition-all duration-300 shadow-[0_0_15px_rgba(139,92,246,0.4)] hover:scale-110 flex-shrink-0 gap-1"
+                        title={`Visit ${project.title}`}
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   );

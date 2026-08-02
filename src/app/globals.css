@@ -1,39 +1,93 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #050505;
-  --color-foreground: #FFFFFF;
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-foreground: var(--foreground);
   --color-primary: #8B5CF6;
   --color-primary-light: #A78BFA;
   --color-primary-dark: #6D28D9;
-  --color-glass: rgba(255, 255, 255, 0.05);
-  --color-glass-border: rgba(255, 255, 255, 0.1);
+  --color-glass: var(--glass-bg);
+  --color-glass-border: var(--glass-border);
   --font-ethno: var(--font-ethno);
 }
 
 :root {
-  --background: #050505;
+  --background: #16151f;
+  --surface: #1f1e2c;
+  --surface-hover: #29273b;
   --foreground: #FFFFFF;
+  --primary: #8B5CF6;
+  --primary-light: #A78BFA;
+  --text-muted: #a194b8;
+  --glass-bg: rgba(31, 30, 44, 0.65);
+  --glass-border: rgba(167, 139, 250, 0.18);
+  --card-bg: rgba(31, 30, 44, 0.65);
+  --card-border: rgba(167, 139, 250, 0.18);
+  --logo-bg: #9598c7;
+}
+
+html.light {
+  --background: #f4f4f8;
+  --surface: #ffffff;
+  --surface-hover: #f1f5f9;
+  --foreground: #0f172a;
+  --primary: #7c3aed;
+  --primary-light: #8b5cf6;
+  --text-muted: #64748b;
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(124, 58, 237, 0.2);
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(124, 58, 237, 0.2);
+  --logo-bg: #c5c7e3; /* Light tint in the exact same #9598c7 color family */
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   overflow-x: hidden;
-  cursor: none; /* We will use a custom cursor */
+  cursor: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Glassmorphism Utilities */
 .glass {
-  background: var(--color-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--color-glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
 }
 
-/* Text Gradient */
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--card-border);
+}
+
+.glass-card:hover {
+  background: var(--surface-hover);
+  border-color: rgba(167, 139, 250, 0.45);
+}
+
+/* Text Gradients */
 .text-gradient {
-  background: linear-gradient(to right, #8B5CF6, #C084FC, #818CF8);
+  background: linear-gradient(135deg, var(--foreground) 0%, #A78BFA 50%, #8B5CF6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-purple {
+  background: linear-gradient(135deg, #C084FC 0%, #8B5CF6 50%, #6D28D9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+html.light .text-gradient-purple {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 50%, #4c1d95 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -41,7 +95,26 @@ body {
 
 /* Neon Glow */
 .neon-glow {
-  box-shadow: 0 0 15px rgba(139, 92, 246, 0.5), 0 0 30px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.2);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface);
+  border-radius: 4px;
+  border: 1px solid var(--glass-border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8b5cf6;
 }
 
 /* Lenis Smooth Scroll Recommended Styles */

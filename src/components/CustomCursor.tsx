@@ -6,19 +6,22 @@ import { motion } from "framer-motion";
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
+      if (!isVisible) setIsVisible(true);
     };
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (
-        target.tagName.toLowerCase() === "a" ||
-        target.tagName.toLowerCase() === "button" ||
+        target.tagName?.toLowerCase() === "a" ||
+        target.tagName?.toLowerCase() === "button" ||
         target.closest("a") ||
-        target.closest("button")
+        target.closest("button") ||
+        target.classList?.contains("cursor-pointer")
       ) {
         setIsHovering(true);
       } else {
@@ -26,41 +29,54 @@ export default function CustomCursor() {
       }
     };
 
+    const handleMouseLeave = () => {
+      setIsVisible(false);
+    };
+
     window.addEventListener("mousemove", updateMousePosition);
     window.addEventListener("mouseover", handleMouseOver);
+    document.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
       window.removeEventListener("mousemove", updateMousePosition);
       window.removeEventListener("mouseover", handleMouseOver);
+      document.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, []);
+  }, [isVisible]);
+
+  if (!isVisible) return null;
 
   return (
     <>
+      {/* Inner Dot - Highest Z-Index (z-[99999]) to stay above Navbar and all UI elements */}
       <motion.div
-        className="fixed top-0 left-0 w-4 h-4 bg-primary rounded-full pointer-events-none z-50 mix-blend-screen"
+        className="fixed top-0 left-0 w-3.5 h-3.5 bg-[#a78bfa] rounded-full pointer-events-none z-[99999] shadow-[0_0_12px_#8b5cf6]"
         animate={{
-          x: mousePosition.x - 8,
-          y: mousePosition.y - 8,
-          scale: isHovering ? 2 : 1,
+          x: mousePosition.x - 7,
+          y: mousePosition.y - 7,
+          scale: isHovering ? 2.2 : 1,
+          backgroundColor: isHovering ? "#c084fc" : "#a78bfa",
         }}
         transition={{
           type: "tween",
           ease: "backOut",
-          duration: 0.15,
+          duration: 0.12,
         }}
       />
+      
+      {/* Outer Ring - Highest Z-Index */}
       <motion.div
-        className="fixed top-0 left-0 w-12 h-12 border border-primary/50 rounded-full pointer-events-none z-50"
+        className="fixed top-0 left-0 w-10 h-10 border border-[#a78bfa]/60 rounded-full pointer-events-none z-[99999] bg-[#8b5cf6]/5"
         animate={{
-          x: mousePosition.x - 24,
-          y: mousePosition.y - 24,
-          scale: isHovering ? 1.5 : 1,
+          x: mousePosition.x - 20,
+          y: mousePosition.y - 20,
+          scale: isHovering ? 1.6 : 1,
+          borderColor: isHovering ? "rgba(192, 132, 252, 0.9)" : "rgba(167, 139, 250, 0.6)",
         }}
         transition={{
           type: "tween",
           ease: "easeOut",
-          duration: 0.3,
+          duration: 0.22,
         }}
       />
     </>
