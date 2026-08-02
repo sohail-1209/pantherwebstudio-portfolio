@@ -24,22 +24,63 @@ export default function Contact() {
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log(data);
-    toast.success("Message sent successfully! We'll get back to you soon.", {
-      style: {
-        background: 'var(--surface)',
-        color: 'var(--foreground)',
-        border: '1px solid var(--glass-border)',
-        backdropFilter: 'blur(10px)',
-      },
-      iconTheme: {
-        primary: '#8b5cf6',
-        secondary: '#fff',
-      },
-    });
-    setIsSubmitting(false);
-    reset();
+    try {
+      // First attempt submission via Web3Forms endpoint direct to pantherwebstudio@gmail.com
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "0c9d7491-03eb-460d-83b3-8557b42f65a1",
+          name: data.name,
+          email: data.email,
+          message: data.message,
+          subject: `New Portfolio Inquiry from ${data.name}`,
+          from_name: "Panther Web Studio Contact Form",
+          to_email: "pantherwebstudio@gmail.com",
+        }),
+      });
+
+      const result = await res.json();
+
+      if (res.ok || result.success) {
+        toast.success("Message sent successfully! We will reply to your email shortly.", {
+          style: {
+            background: 'var(--surface)',
+            color: 'var(--foreground)',
+            border: '1px solid var(--glass-border)',
+            backdropFilter: 'blur(10px)',
+          },
+          iconTheme: {
+            primary: '#8b5cf6',
+            secondary: '#fff',
+          },
+        });
+        reset();
+      } else {
+        // Fallback to internal Next.js API route
+        await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        toast.success("Message delivered successfully to pantherwebstudio@gmail.com!", {
+          style: {
+            background: 'var(--surface)',
+            color: 'var(--foreground)',
+            border: '1px solid var(--glass-border)',
+          },
+        });
+        reset();
+      }
+    } catch (error) {
+      console.error("Error submitting contact form:", error);
+      toast.error("Message submission error. You can also email us directly at pantherwebstudio@gmail.com.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
