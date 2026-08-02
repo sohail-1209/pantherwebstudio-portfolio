@@ -135,7 +135,7 @@ export default function Services() {
             <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
-          {/* Orbit Wheel & Central Mockup Card Container - Generous size for mobile & desktop */}
+          {/* Orbit Wheel & Central Mockup Card Container */}
           <div className="relative w-[350px] h-[350px] xs:w-[380px] xs:h-[380px] sm:w-[500px] sm:h-[500px] md:w-[640px] md:h-[640px] lg:w-[740px] lg:h-[740px] flex items-center justify-center mx-auto">
             
             {/* Perfectly Centered SVG Connecting Interactive Arc & Rings */}
@@ -145,12 +145,12 @@ export default function Services() {
             >
               <defs>
                 <linearGradient id="purpleArcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#7c3aed" stopOpacity="1" />
-                  <stop offset="50%" stopColor="#8b5cf6" stopOpacity="1" />
-                  <stop offset="100%" stopColor="#a78bfa" stopOpacity="0.4" />
+                  <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.3" />
+                  <stop offset="60%" stopColor="#8b5cf6" stopOpacity="1" />
+                  <stop offset="100%" stopColor="#a78bfa" stopOpacity="1" />
                 </linearGradient>
                 <filter id="arcGlow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="5" result="blur" />
+                  <feGaussianBlur stdDeviation="6" result="blur" />
                   <feMerge>
                     <feMergeNode in="blur" />
                     <feMergeNode in="SourceGraphic" />
@@ -170,17 +170,17 @@ export default function Services() {
                 className="opacity-50"
               />
 
-              {/* Interactive Animated Glowing Purple Arc */}
+              {/* Glowing Purple Arc connecting the node before the selected node to the selected node */}
               <motion.circle
                 cx="300"
                 cy="300"
                 r="245"
                 fill="none"
                 stroke="url(#purpleArcGrad)"
-                strokeWidth="4"
-                strokeDasharray="160 1400"
+                strokeWidth="4.5"
+                strokeDasharray="170 1370"
                 filter="url(#arcGlow)"
-                animate={{ rotate: rotationAngle - 90 }}
+                animate={{ rotate: -36 }}
                 transition={{ type: "spring", stiffness: 85, damping: 18 }}
                 style={{ transformOrigin: "300px 300px" }}
               />
@@ -230,7 +230,7 @@ export default function Services() {
                       ))}
                     </div>
 
-                    {/* Right Laptop Frame Preview Image (Visible on ALL screens) */}
+                    {/* Right Laptop Frame Preview Image */}
                     <div className="col-span-6">
                       <div className="relative w-full h-16 xs:h-20 sm:h-24 rounded-lg sm:rounded-xl overflow-hidden border border-[var(--glass-border)] shadow-md bg-[var(--background)] group">
                         <img
