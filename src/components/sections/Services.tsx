@@ -126,20 +126,23 @@ export default function Services() {
         {/* Orbit Wheel Container with Flanking Buttons */}
         <div className="relative flex items-center justify-between w-full max-w-6xl my-1 px-1 sm:px-6">
           
-          {/* Left Rotate Arrow Button */}
+          {/* Left Rotate Arrow Button - Absolute z-40 on mobile */}
           <button
             onClick={handlePrev}
-            className="z-30 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-[var(--surface)] border border-[var(--glass-border)] hover:bg-[#8b5cf6] text-[#8b5cf6] hover:text-white flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110 active:scale-95 flex-shrink-0"
+            className="z-40 absolute left-0 sm:static w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[var(--surface)]/95 backdrop-blur-md border border-[var(--glass-border)] hover:bg-[#8b5cf6] text-[#8b5cf6] hover:text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 flex-shrink-0"
             aria-label="Previous Service"
           >
             <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
           {/* Orbit Wheel & Central Mockup Card Container */}
-          <div className="relative w-[320px] h-[320px] sm:w-[500px] sm:h-[500px] md:w-[640px] md:h-[640px] lg:w-[740px] lg:h-[740px] flex items-center justify-center mx-auto">
+          <div className="relative w-[330px] h-[330px] xs:w-[360px] xs:h-[360px] sm:w-[500px] sm:h-[500px] md:w-[640px] md:h-[640px] lg:w-[740px] lg:h-[740px] flex items-center justify-center mx-auto">
             
-            {/* SVG Connecting Interactive Arc & Rings */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible">
+            {/* Perfectly Centered SVG Connecting Interactive Arc & Rings */}
+            <svg 
+              className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible"
+              viewBox="0 0 600 600"
+            >
               <defs>
                 <linearGradient id="purpleArcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#7c3aed" stopOpacity="1" />
@@ -147,7 +150,7 @@ export default function Services() {
                   <stop offset="100%" stopColor="#a78bfa" stopOpacity="0.4" />
                 </linearGradient>
                 <filter id="arcGlow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="6" result="blur" />
+                  <feGaussianBlur stdDeviation="5" result="blur" />
                   <feMerge>
                     <feMergeNode in="blur" />
                     <feMergeNode in="SourceGraphic" />
@@ -155,36 +158,36 @@ export default function Services() {
                 </filter>
               </defs>
 
-              {/* Outer Subtle Orbit Guide Circle */}
+              {/* Outer Orbit Guide Circle */}
               <circle
-                cx="50%"
-                cy="50%"
-                r="calc(var(--orbit-radius, 315px))"
+                cx="300"
+                cy="300"
+                r="245"
                 fill="none"
                 stroke="var(--glass-border)"
                 strokeWidth="1.5"
                 strokeDasharray="4 4"
-                className="opacity-60"
+                className="opacity-50"
               />
 
-              {/* Interactive Animated Glowing Purple Connecting Arc */}
+              {/* Interactive Animated Glowing Purple Arc */}
               <motion.circle
-                cx="50%"
-                cy="50%"
-                r="calc(var(--orbit-radius, 315px))"
+                cx="300"
+                cy="300"
+                r="245"
                 fill="none"
                 stroke="url(#purpleArcGrad)"
                 strokeWidth="4"
-                strokeDasharray="180 800"
+                strokeDasharray="160 1400"
                 filter="url(#arcGlow)"
                 animate={{ rotate: rotationAngle - 90 }}
                 transition={{ type: "spring", stiffness: 85, damping: 18 }}
-                style={{ transformOrigin: "center center" }}
+                style={{ transformOrigin: "300px 300px" }}
               />
             </svg>
 
-            {/* Central Service Glass Mockup Card - Optimized for Mobile & Desktop */}
-            <div className="absolute z-20 w-[225px] xs:w-[245px] sm:w-[330px] md:w-[390px] lg:w-[430px] bg-[var(--surface)]/95 backdrop-blur-2xl border border-[var(--glass-border)] rounded-3xl p-3.5 sm:p-5 md:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex flex-col items-center text-left">
+            {/* Central Service Glass Mockup Card - Fits Perfectly inside Orbit Circle */}
+            <div className="absolute z-20 w-[215px] xs:w-[235px] sm:w-[330px] md:w-[390px] lg:w-[430px] bg-[var(--surface)]/95 backdrop-blur-2xl border border-[var(--glass-border)] rounded-3xl p-3 sm:p-5 md:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex flex-col items-center text-left">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeIndex}
@@ -195,32 +198,32 @@ export default function Services() {
                   className="w-full flex flex-col items-center"
                 >
                   {/* Top Glowing Icon Badge */}
-                  <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#8b5cf6]/15 border border-[#8b5cf6]/40 flex items-center justify-center text-[#8b5cf6] mb-2 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+                  <div className="w-7 h-7 sm:w-11 sm:h-11 rounded-full bg-[#8b5cf6]/15 border border-[#8b5cf6]/40 flex items-center justify-center text-[#8b5cf6] mb-1.5 sm:mb-2.5 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
                     {(() => {
                       const IconComponent = services[activeIndex].icon;
-                      return <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />;
+                      return <IconComponent className="w-3.5 h-3.5 sm:w-5 sm:h-5" />;
                     })()}
                   </div>
 
                   {/* Title & Description */}
                   <h3 className="text-xs sm:text-base md:text-lg font-bold text-[var(--foreground)] mb-1 text-center leading-tight">
-                    <span className="text-[#8b5cf6] mr-1.5">–</span>
+                    <span className="text-[#8b5cf6] mr-1">–</span>
                     {services[activeIndex].name}
                   </h3>
-                  <p className="text-[10px] sm:text-xs text-[var(--text-muted)] text-center leading-snug mb-2.5 max-w-xs line-clamp-2">
+                  <p className="text-[9px] sm:text-xs text-[var(--text-muted)] text-center leading-snug mb-2 max-w-xs line-clamp-2">
                     {services[activeIndex].desc}
                   </p>
 
                   {/* Card Content Grid: Left Bullet Points, Right Preview Mockup Image */}
-                  <div className="grid grid-cols-2 sm:grid-cols-12 gap-2 sm:gap-3 w-full items-center mb-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-12 gap-1.5 sm:gap-3 w-full items-center mb-2.5 sm:mb-4">
                     {/* Bullet Points */}
-                    <div className="col-span-2 sm:col-span-6 grid grid-cols-2 sm:grid-cols-1 gap-1.5">
+                    <div className="col-span-2 sm:col-span-6 grid grid-cols-2 sm:grid-cols-1 gap-1">
                       {services[activeIndex].features.map((feat, idx) => (
                         <div key={idx} className="flex items-center gap-1">
                           <div className="w-3 h-3 rounded-full bg-[#8b5cf6]/20 flex items-center justify-center text-[#8b5cf6] flex-shrink-0">
                             <Check className="w-2 h-2 stroke-[3]" />
                           </div>
-                          <span className="text-[9px] sm:text-[11px] font-medium text-[var(--foreground)] truncate">
+                          <span className="text-[8.5px] sm:text-[11px] font-medium text-[var(--foreground)] truncate">
                             {feat}
                           </span>
                         </div>
@@ -241,31 +244,31 @@ export default function Services() {
                   </div>
 
                   {/* Action Buttons Inside Card */}
-                  <div className="flex flex-row items-center justify-center gap-2 w-full">
+                  <div className="flex flex-row items-center justify-center gap-1.5 sm:gap-2.5 w-full">
                     <Link
                       href="#portfolio"
-                      className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-[#7c3aed] to-[#8b5cf6] text-white text-[10px] sm:text-xs font-semibold shadow-[0_0_12px_rgba(139,92,246,0.35)] hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] flex items-center gap-1 transition-all hover:scale-105"
+                      className="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-[#7c3aed] to-[#8b5cf6] text-white text-[9.5px] sm:text-xs font-semibold shadow-[0_0_12px_rgba(139,92,246,0.35)] hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] flex items-center gap-1 transition-all hover:scale-105"
                     >
                       <span>View Projects</span>
-                      <ArrowRight className="w-3 h-3" />
+                      <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                     </Link>
                     <Link
                       href="#contact"
-                      className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-[var(--surface-hover)] border border-[var(--glass-border)] text-[var(--foreground)] text-[10px] sm:text-xs font-semibold hover:border-[#8b5cf6] flex items-center gap-1 transition-all hover:scale-105"
+                      className="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-[var(--surface-hover)] border border-[var(--glass-border)] text-[var(--foreground)] text-[9.5px] sm:text-xs font-semibold hover:border-[#8b5cf6] flex items-center gap-1 transition-all hover:scale-105"
                     >
                       <span>Get Quote</span>
-                      <ArrowRight className="w-3 h-3 text-[#8b5cf6]" />
+                      <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#8b5cf6]" />
                     </Link>
                   </div>
 
                   {/* Pagination Dots */}
-                  <div className="flex items-center gap-1.5 mt-2.5">
+                  <div className="flex items-center gap-1 sm:gap-1.5 mt-2 sm:mt-3">
                     {services.map((_, i) => (
                       <button
                         key={i}
                         onClick={() => setActiveIndex(i)}
-                        className={`h-1.5 rounded-full transition-all duration-300 ${
-                          i === activeIndex ? "w-4 bg-[#8b5cf6]" : "w-1.5 bg-[var(--text-muted)]/40"
+                        className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 ${
+                          i === activeIndex ? "w-3 sm:w-4 bg-[#8b5cf6]" : "w-1 sm:w-1.5 bg-[var(--text-muted)]/40"
                         }`}
                       />
                     ))}
@@ -289,26 +292,31 @@ export default function Services() {
                     key={item.name}
                     className="absolute pointer-events-auto"
                     style={{
-                      transform: `rotate(${baseAngle}deg) translate(var(--orbit-radius, 315px)) rotate(-${baseAngle}deg)`,
+                      transform: `rotate(${baseAngle}deg) translate(var(--orbit-radius, 245px)) rotate(-${baseAngle}deg)`,
                     }}
                   >
                     <style jsx>{`
                       div {
-                        --orbit-radius: 150px;
+                        --orbit-radius: 135px;
+                      }
+                      @media (min-width: 380px) {
+                        div {
+                          --orbit-radius: 148px;
+                        }
                       }
                       @media (min-width: 640px) {
                         div {
-                          --orbit-radius: 215px;
+                          --orbit-radius: 205px;
                         }
                       }
                       @media (min-width: 768px) {
                         div {
-                          --orbit-radius: 265px;
+                          --orbit-radius: 260px;
                         }
                       }
                       @media (min-width: 1024px) {
                         div {
-                          --orbit-radius: 315px;
+                          --orbit-radius: 300px;
                         }
                       }
                     `}</style>
@@ -320,7 +328,7 @@ export default function Services() {
                       {/* Node Circle Button */}
                       <button
                         onClick={() => setActiveIndex(index)}
-                        className={`w-9 h-9 sm:w-12 sm:h-12 md:w-13 md:h-13 rounded-full flex items-center justify-center transition-all duration-300 ${
+                        className={`w-8 h-8 sm:w-12 sm:h-12 md:w-13 md:h-13 rounded-full flex items-center justify-center transition-all duration-300 ${
                           isSelected
                             ? "bg-gradient-to-tr from-[#7c3aed] to-[#8b5cf6] text-white border-2 border-white/80 shadow-[0_0_25px_rgba(139,92,246,0.7)] scale-125"
                             : "bg-[var(--surface)] text-[var(--foreground)] border border-[var(--glass-border)] hover:bg-[#8b5cf6] hover:text-white shadow-md"
@@ -330,8 +338,8 @@ export default function Services() {
                         <item.icon className="w-3.5 h-3.5 sm:w-5 sm:h-5 md:w-6 md:h-6" />
                       </button>
 
-                      {/* Text Label Below Node */}
-                      <span className={`text-[8px] sm:text-[11px] font-semibold mt-1 whitespace-nowrap transition-colors duration-300 ${
+                      {/* Text Label Below Node (Hidden on very tiny mobile to avoid clutter) */}
+                      <span className={`hidden sm:block text-[9px] sm:text-[11px] font-semibold mt-1 whitespace-nowrap transition-colors duration-300 ${
                         isSelected ? "text-[#8b5cf6] font-bold" : "text-[var(--text-muted)]"
                       }`}>
                         {item.name}
@@ -343,10 +351,10 @@ export default function Services() {
             </motion.div>
           </div>
 
-          {/* Right Rotate Arrow Button */}
+          {/* Right Rotate Arrow Button - Absolute z-40 on mobile */}
           <button
             onClick={handleNext}
-            className="z-30 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-[var(--surface)] border border-[var(--glass-border)] hover:bg-[#8b5cf6] text-[#8b5cf6] hover:text-white flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110 active:scale-95 flex-shrink-0"
+            className="z-40 absolute right-0 sm:static w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[var(--surface)]/95 backdrop-blur-md border border-[var(--glass-border)] hover:bg-[#8b5cf6] text-[#8b5cf6] hover:text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 flex-shrink-0"
             aria-label="Next Service"
           >
             <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
