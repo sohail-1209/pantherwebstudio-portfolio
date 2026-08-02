@@ -129,14 +129,14 @@ export default function Services() {
           {/* Left Rotate Arrow Button - Absolute z-40 on mobile */}
           <button
             onClick={handlePrev}
-            className="z-40 absolute left-0 sm:static w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[var(--surface)]/95 backdrop-blur-md border border-[var(--glass-border)] hover:bg-[#8b5cf6] text-[#8b5cf6] hover:text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 flex-shrink-0"
+            className="z-40 absolute left-0 sm:static w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-[var(--surface)]/95 backdrop-blur-md border border-[var(--glass-border)] hover:bg-[#8b5cf6] text-[#8b5cf6] hover:text-white flex items-center justify-center transition-all duration-300 shadow-xl hover:scale-110 active:scale-95 flex-shrink-0"
             aria-label="Previous Service"
           >
             <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
           {/* Orbit Wheel & Central Mockup Card Container */}
-          <div className="relative w-[330px] h-[330px] xs:w-[360px] xs:h-[360px] sm:w-[500px] sm:h-[500px] md:w-[640px] md:h-[640px] lg:w-[740px] lg:h-[740px] flex items-center justify-center mx-auto">
+          <div className="relative w-[320px] h-[320px] xs:w-[360px] xs:h-[360px] sm:w-[500px] sm:h-[500px] md:w-[640px] md:h-[640px] lg:w-[740px] lg:h-[740px] flex items-center justify-center mx-auto">
             
             {/* Perfectly Centered SVG Connecting Interactive Arc & Rings */}
             <svg 
@@ -186,44 +186,44 @@ export default function Services() {
               />
             </svg>
 
-            {/* Central Service Glass Mockup Card - Fits Perfectly inside Orbit Circle */}
-            <div className="absolute z-20 w-[215px] xs:w-[235px] sm:w-[330px] md:w-[390px] lg:w-[430px] bg-[var(--surface)]/95 backdrop-blur-2xl border border-[var(--glass-border)] rounded-3xl p-3 sm:p-5 md:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex flex-col items-center text-left">
+            {/* Central Service Glass Mockup Card - Scaled down for mobile fit */}
+            <div className="absolute z-20 w-[185px] xs:w-[205px] sm:w-[310px] md:w-[380px] lg:w-[420px] bg-[var(--surface)]/95 backdrop-blur-2xl border border-[var(--glass-border)] rounded-2xl sm:rounded-3xl p-2.5 sm:p-5 md:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex flex-col items-center text-left">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeIndex}
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  initial={{ opacity: 0, y: 8, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  exit={{ opacity: 0, y: -8, scale: 0.95 }}
                   transition={{ duration: 0.25 }}
                   className="w-full flex flex-col items-center"
                 >
                   {/* Top Glowing Icon Badge */}
-                  <div className="w-7 h-7 sm:w-11 sm:h-11 rounded-full bg-[#8b5cf6]/15 border border-[#8b5cf6]/40 flex items-center justify-center text-[#8b5cf6] mb-1.5 sm:mb-2.5 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+                  <div className="w-6 h-6 sm:w-11 sm:h-11 rounded-full bg-[#8b5cf6]/15 border border-[#8b5cf6]/40 flex items-center justify-center text-[#8b5cf6] mb-1 sm:mb-2.5 shadow-[0_0_12px_rgba(139,92,246,0.3)] flex-shrink-0">
                     {(() => {
                       const IconComponent = services[activeIndex].icon;
-                      return <IconComponent className="w-3.5 h-3.5 sm:w-5 sm:h-5" />;
+                      return <IconComponent className="w-3 h-3 sm:w-5 sm:h-5" />;
                     })()}
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-xs sm:text-base md:text-lg font-bold text-[var(--foreground)] mb-1 text-center leading-tight">
+                  <h3 className="text-[10.5px] sm:text-base md:text-lg font-bold text-[var(--foreground)] mb-0.5 text-center leading-tight">
                     <span className="text-[#8b5cf6] mr-1">–</span>
                     {services[activeIndex].name}
                   </h3>
-                  <p className="text-[9px] sm:text-xs text-[var(--text-muted)] text-center leading-snug mb-2 max-w-xs line-clamp-2">
+                  <p className="text-[8px] sm:text-xs text-[var(--text-muted)] text-center leading-tight mb-1.5 max-w-xs line-clamp-2">
                     {services[activeIndex].desc}
                   </p>
 
                   {/* Card Content Grid: Left Bullet Points, Right Preview Mockup Image */}
-                  <div className="grid grid-cols-2 sm:grid-cols-12 gap-1.5 sm:gap-3 w-full items-center mb-2.5 sm:mb-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-12 gap-1 sm:gap-3 w-full items-center mb-2 sm:mb-4">
                     {/* Bullet Points */}
                     <div className="col-span-2 sm:col-span-6 grid grid-cols-2 sm:grid-cols-1 gap-1">
                       {services[activeIndex].features.map((feat, idx) => (
                         <div key={idx} className="flex items-center gap-1">
-                          <div className="w-3 h-3 rounded-full bg-[#8b5cf6]/20 flex items-center justify-center text-[#8b5cf6] flex-shrink-0">
-                            <Check className="w-2 h-2 stroke-[3]" />
+                          <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#8b5cf6]/20 flex items-center justify-center text-[#8b5cf6] flex-shrink-0">
+                            <Check className="w-1.5 h-1.5 sm:w-2 sm:h-2 stroke-[3]" />
                           </div>
-                          <span className="text-[8.5px] sm:text-[11px] font-medium text-[var(--foreground)] truncate">
+                          <span className="text-[8px] sm:text-[11px] font-medium text-[var(--foreground)] truncate">
                             {feat}
                           </span>
                         </div>
@@ -244,17 +244,17 @@ export default function Services() {
                   </div>
 
                   {/* Action Buttons Inside Card */}
-                  <div className="flex flex-row items-center justify-center gap-1.5 sm:gap-2.5 w-full">
+                  <div className="flex flex-row items-center justify-center gap-1 sm:gap-2.5 w-full">
                     <Link
                       href="#portfolio"
-                      className="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-[#7c3aed] to-[#8b5cf6] text-white text-[9.5px] sm:text-xs font-semibold shadow-[0_0_12px_rgba(139,92,246,0.35)] hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] flex items-center gap-1 transition-all hover:scale-105"
+                      className="px-2 py-1 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#7c3aed] to-[#8b5cf6] text-white text-[8.5px] sm:text-xs font-semibold shadow-[0_0_10px_rgba(139,92,246,0.35)] hover:shadow-[0_0_18px_rgba(139,92,246,0.5)] flex items-center gap-0.5 transition-all hover:scale-105"
                     >
                       <span>View Projects</span>
                       <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                     </Link>
                     <Link
                       href="#contact"
-                      className="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-[var(--surface-hover)] border border-[var(--glass-border)] text-[var(--foreground)] text-[9.5px] sm:text-xs font-semibold hover:border-[#8b5cf6] flex items-center gap-1 transition-all hover:scale-105"
+                      className="px-2 py-1 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl bg-[var(--surface-hover)] border border-[var(--glass-border)] text-[var(--foreground)] text-[8.5px] sm:text-xs font-semibold hover:border-[#8b5cf6] flex items-center gap-0.5 transition-all hover:scale-105"
                     >
                       <span>Get Quote</span>
                       <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#8b5cf6]" />
@@ -262,7 +262,7 @@ export default function Services() {
                   </div>
 
                   {/* Pagination Dots */}
-                  <div className="flex items-center gap-1 sm:gap-1.5 mt-2 sm:mt-3">
+                  <div className="flex items-center gap-1 sm:gap-1.5 mt-1.5 sm:mt-3">
                     {services.map((_, i) => (
                       <button
                         key={i}
