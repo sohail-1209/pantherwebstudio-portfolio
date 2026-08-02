@@ -134,10 +134,10 @@ export default function Loader({ onComplete }: { onComplete: () => void }) {
 
           {/* Progress Bar Container & Counter */}
           <motion.div
-            initial={{ opacity: 0, width: 0 }}
-            animate={{ opacity: 1, width: "100%" }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="w-48 sm:w-64 flex flex-col items-center gap-2"
+            className="w-36 sm:w-48 max-w-[75vw] px-4 flex flex-col items-center gap-2"
           >
             <div className="w-full h-1.5 rounded-full bg-[var(--surface-hover)] border border-[var(--glass-border)] overflow-hidden relative shadow-inner">
               <motion.div
