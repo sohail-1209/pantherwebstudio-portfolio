@@ -25,8 +25,8 @@ export default function Contact() {
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     try {
-      // First attempt submission via Web3Forms endpoint direct to pantherwebstudio@gmail.com
-      const res = await fetch("https://api.web3forms.com/submit", {
+      // 1. Submit email in background via Web3Forms API to pantherwebstudio@gmail.com
+      fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,43 +41,47 @@ export default function Contact() {
           from_name: "Panther Web Studio Contact Form",
           to_email: "pantherwebstudio@gmail.com",
         }),
+      }).catch((err) => console.error("Web3Forms submission background log:", err));
+
+      // Also call internal contact API route
+      fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      }).catch((err) => console.error("Internal contact log:", err));
+
+      // 2. Direct Gmail compose URL prefilled with details
+      const subject = encodeURIComponent(`Project Inquiry from ${data.name}`);
+      const body = encodeURIComponent(
+        `Hi Panther Web Studio Team,\n\nName: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}\n\nSent via pantherwebstudio.vercel.app`
+      );
+      
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=pantherwebstudio@gmail.com&su=${subject}&body=${body}`;
+      const mailtoUrl = `mailto:pantherwebstudio@gmail.com?subject=${subject}&body=${body}`;
+
+      // Open Gmail directly in new window/tab
+      const opened = window.open(gmailUrl, "_blank");
+      if (!opened) {
+        window.location.href = mailtoUrl;
+      }
+
+      toast.success("Opening Gmail & sending your message to pantherwebstudio@gmail.com!", {
+        style: {
+          background: 'var(--surface)',
+          color: 'var(--foreground)',
+          border: '1px solid var(--glass-border)',
+        },
+        iconTheme: {
+          primary: '#8b5cf6',
+          secondary: '#fff',
+        },
       });
 
-      const result = await res.json();
-
-      if (res.ok || result.success) {
-        toast.success("Message sent successfully! We will reply to your email shortly.", {
-          style: {
-            background: 'var(--surface)',
-            color: 'var(--foreground)',
-            border: '1px solid var(--glass-border)',
-            backdropFilter: 'blur(10px)',
-          },
-          iconTheme: {
-            primary: '#8b5cf6',
-            secondary: '#fff',
-          },
-        });
-        reset();
-      } else {
-        // Fallback to internal Next.js API route
-        await fetch("/api/contact", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
-        toast.success("Message delivered successfully to pantherwebstudio@gmail.com!", {
-          style: {
-            background: 'var(--surface)',
-            color: 'var(--foreground)',
-            border: '1px solid var(--glass-border)',
-          },
-        });
-        reset();
-      }
+      reset();
     } catch (error) {
-      console.error("Error submitting contact form:", error);
-      toast.error("Message submission error. You can also email us directly at pantherwebstudio@gmail.com.");
+      console.error("Error in contact form submit:", error);
+      toast.error("Opening email client directly...");
+      window.location.href = `mailto:pantherwebstudio@gmail.com?subject=Inquiry&body=${encodeURIComponent(data.message)}`;
     } finally {
       setIsSubmitting(false);
     }
