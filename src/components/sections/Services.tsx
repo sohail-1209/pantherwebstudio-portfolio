@@ -9,6 +9,19 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+const arcGlowColors = [
+  { start: "#7c3aed", mid: "#8b5cf6", end: "#c084fc" }, // Purple/Violet
+  { start: "#0284c7", mid: "#06b6d4", end: "#38bdf8" }, // Cyan/Blue
+  { start: "#db2777", mid: "#ec4899", end: "#f472b6" }, // Pink/Rose
+  { start: "#2563eb", mid: "#3b82f6", end: "#60a5fa" }, // Sapphire/Sky
+  { start: "#059669", mid: "#10b981", end: "#34d399" }, // Emerald/Teal
+  { start: "#d97706", mid: "#f59e0b", end: "#fbbf24" }, // Amber/Gold
+  { start: "#7c3aed", mid: "#a855f7", end: "#e879f9" }, // Purple/Fuchsia
+  { start: "#4f46e5", mid: "#6366f1", end: "#818cf8" }, // Indigo
+  { start: "#c026d3", mid: "#d946ef", end: "#f0abfc" }, // Magenta
+  { start: "#9333ea", mid: "#a855f7", end: "#c084fc" }, // Violet
+];
+
 const services = [
   { 
     name: "Website Development", 
@@ -94,12 +107,17 @@ export default function Services() {
   };
 
   const rotationAngle = -activeIndex * 36; // 360 / 10 = 36 deg
+  const currentColor = arcGlowColors[activeIndex % arcGlowColors.length];
 
   return (
     <section id="services" className="py-12 md:py-20 relative bg-[var(--background)] select-none overflow-hidden flex flex-col justify-center items-center transition-colors duration-300">
       {/* Background Ambient Glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] md:w-[750px] h-[600px] md:h-[750px] bg-[#8b5cf6]/10 rounded-full blur-[160px]" />
+        <motion.div 
+          animate={{ backgroundColor: currentColor.mid }}
+          transition={{ duration: 0.8 }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] md:w-[750px] h-[600px] md:h-[750px] opacity-10 rounded-full blur-[160px]" 
+        />
       </div>
 
       <div className="container mx-auto px-2 sm:px-6 relative z-10 flex flex-col items-center text-center max-w-7xl">
@@ -144,10 +162,25 @@ export default function Services() {
               viewBox="0 0 600 600"
             >
               <defs>
-                <linearGradient id="purpleArcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.3" />
-                  <stop offset="60%" stopColor="#8b5cf6" stopOpacity="1" />
-                  <stop offset="100%" stopColor="#a78bfa" stopOpacity="1" />
+                <linearGradient id="dynamicArcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <motion.stop 
+                    offset="0%" 
+                    animate={{ stopColor: currentColor.start }} 
+                    transition={{ duration: 0.5 }}
+                    stopOpacity="0.25" 
+                  />
+                  <motion.stop 
+                    offset="50%" 
+                    animate={{ stopColor: currentColor.mid }} 
+                    transition={{ duration: 0.5 }}
+                    stopOpacity="1" 
+                  />
+                  <motion.stop 
+                    offset="100%" 
+                    animate={{ stopColor: currentColor.end }} 
+                    transition={{ duration: 0.5 }}
+                    stopOpacity="1" 
+                  />
                 </linearGradient>
                 <filter id="arcGlow" x="-20%" y="-20%" width="140%" height="140%">
                   <feGaussianBlur stdDeviation="6" result="blur" />
@@ -170,18 +203,38 @@ export default function Services() {
                 className="opacity-50"
               />
 
-              {/* Glowing Purple Arc connecting the node before the selected node to the selected node */}
+              {/* Animated Color-Changing Glowing Arc connecting previous node to selected node */}
               <motion.circle
+                key={`arc-${activeIndex}`}
                 cx="300"
                 cy="300"
                 r="245"
                 fill="none"
-                stroke="url(#purpleArcGrad)"
-                strokeWidth="4.5"
-                strokeDasharray="170 1370"
+                stroke="url(#dynamicArcGrad)"
+                strokeWidth="5"
+                strokeDasharray="175 1365"
                 filter="url(#arcGlow)"
-                animate={{ rotate: -36 }}
-                transition={{ type: "spring", stiffness: 85, damping: 18 }}
+                initial={{ opacity: 0.5, strokeWidth: 3 }}
+                animate={{ opacity: 1, strokeWidth: 5, rotate: -36 }}
+                transition={{ duration: 0.45, ease: "easeOut" }}
+                style={{ transformOrigin: "300px 300px" }}
+              />
+
+              {/* Light Energy Spark Traveling along the arc line when changing selected node */}
+              <motion.circle
+                key={`spark-${activeIndex}`}
+                cx="300"
+                cy="300"
+                r="245"
+                fill="none"
+                stroke="#ffffff"
+                strokeWidth="6"
+                strokeDasharray="30 1510"
+                strokeLinecap="round"
+                filter="url(#arcGlow)"
+                initial={{ rotate: -36, opacity: 1 }}
+                animate={{ rotate: 0, opacity: [1, 0.8, 0] }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
                 style={{ transformOrigin: "300px 300px" }}
               />
             </svg>
@@ -197,17 +250,22 @@ export default function Services() {
                   transition={{ duration: 0.25 }}
                   className="w-full flex flex-col items-center"
                 >
-                  {/* Top Glowing Icon Badge */}
-                  <div className="w-7 h-7 sm:w-11 sm:h-11 rounded-full bg-[#8b5cf6]/15 border border-[#8b5cf6]/40 flex items-center justify-center text-[#8b5cf6] mb-1 sm:mb-2.5 shadow-[0_0_12px_rgba(139,92,246,0.3)] flex-shrink-0">
+                  {/* Top Glowing Icon Badge with Dynamic Accent Color */}
+                  <motion.div 
+                    animate={{ borderColor: `${currentColor.mid}80`, backgroundColor: `${currentColor.mid}20` }}
+                    transition={{ duration: 0.5 }}
+                    className="w-7 h-7 sm:w-11 sm:h-11 rounded-full border flex items-center justify-center mb-1 sm:mb-2.5 shadow-md flex-shrink-0"
+                    style={{ color: currentColor.mid }}
+                  >
                     {(() => {
                       const IconComponent = services[activeIndex].icon;
                       return <IconComponent className="w-3.5 h-3.5 sm:w-5 sm:h-5" />;
                     })()}
-                  </div>
+                  </motion.div>
 
                   {/* Title & Description */}
                   <h3 className="text-xs sm:text-base md:text-lg font-bold text-[var(--foreground)] mb-0.5 text-center leading-tight">
-                    <span className="text-[#8b5cf6] mr-1">–</span>
+                    <span style={{ color: currentColor.mid }} className="mr-1">–</span>
                     {services[activeIndex].name}
                   </h3>
                   <p className="text-[8.5px] sm:text-xs text-[var(--text-muted)] text-center leading-tight mb-2 max-w-xs line-clamp-2">
@@ -220,7 +278,10 @@ export default function Services() {
                     <div className="col-span-6 space-y-1 sm:space-y-1.5">
                       {services[activeIndex].features.map((feat, idx) => (
                         <div key={idx} className="flex items-center gap-1">
-                          <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#8b5cf6]/20 flex items-center justify-center text-[#8b5cf6] flex-shrink-0">
+                          <div 
+                            className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full flex items-center justify-center flex-shrink-0"
+                            style={{ backgroundColor: `${currentColor.mid}25`, color: currentColor.mid }}
+                          >
                             <Check className="w-1.5 h-1.5 sm:w-2 sm:h-2 stroke-[3]" />
                           </div>
                           <span className="text-[8px] sm:text-[11px] font-medium text-[var(--foreground)] truncate">
@@ -247,7 +308,8 @@ export default function Services() {
                   <div className="flex flex-row items-center justify-center gap-1.5 sm:gap-2.5 w-full">
                     <Link
                       href="#portfolio"
-                      className="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#7c3aed] to-[#8b5cf6] text-white text-[9px] sm:text-xs font-semibold shadow-[0_0_10px_rgba(139,92,246,0.35)] hover:shadow-[0_0_18px_rgba(139,92,246,0.5)] flex items-center gap-0.5 transition-all hover:scale-105"
+                      className="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-white text-[9px] sm:text-xs font-semibold shadow-md flex items-center gap-0.5 transition-all hover:scale-105"
+                      style={{ background: `linear-gradient(to right, ${currentColor.start}, ${currentColor.mid})` }}
                     >
                       <span>View Projects</span>
                       <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
@@ -257,7 +319,7 @@ export default function Services() {
                       className="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-[var(--surface-hover)] border border-[var(--glass-border)] text-[var(--foreground)] text-[9px] sm:text-xs font-semibold hover:border-[#8b5cf6] flex items-center gap-0.5 transition-all hover:scale-105"
                     >
                       <span>Get Quote</span>
-                      <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#8b5cf6]" />
+                      <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" style={{ color: currentColor.mid }} />
                     </Link>
                   </div>
 
@@ -270,6 +332,7 @@ export default function Services() {
                         className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 ${
                           i === activeIndex ? "w-3.5 sm:w-4 bg-[#8b5cf6]" : "w-1 sm:w-1.5 bg-[var(--text-muted)]/40"
                         }`}
+                        style={{ backgroundColor: i === activeIndex ? currentColor.mid : undefined }}
                       />
                     ))}
                   </div>
@@ -330,18 +393,29 @@ export default function Services() {
                         onClick={() => setActiveIndex(index)}
                         className={`w-8 h-8 sm:w-12 sm:h-12 md:w-13 md:h-13 rounded-full flex items-center justify-center transition-all duration-300 ${
                           isSelected
-                            ? "bg-gradient-to-tr from-[#7c3aed] to-[#8b5cf6] text-white border-2 border-white/80 shadow-[0_0_25px_rgba(139,92,246,0.7)] scale-125"
+                            ? "text-white border-2 border-white/80 scale-125"
                             : "bg-[var(--surface)] text-[var(--foreground)] border border-[var(--glass-border)] hover:bg-[#8b5cf6] hover:text-white shadow-md"
                         }`}
+                        style={{
+                          background: isSelected 
+                            ? `linear-gradient(135deg, ${currentColor.start}, ${currentColor.mid})` 
+                            : undefined,
+                          boxShadow: isSelected
+                            ? `0 0 25px ${currentColor.mid}90`
+                            : undefined
+                        }}
                         aria-label={`Select ${item.name}`}
                       >
                         <item.icon className="w-3.5 h-3.5 sm:w-5 sm:h-5 md:w-6 md:h-6" />
                       </button>
 
                       {/* Text Label Below Node (Hidden on very tiny mobile to avoid clutter) */}
-                      <span className={`hidden sm:block text-[9px] sm:text-[11px] font-semibold mt-1 whitespace-nowrap transition-colors duration-300 ${
-                        isSelected ? "text-[#8b5cf6] font-bold" : "text-[var(--text-muted)]"
-                      }`}>
+                      <span 
+                        className={`hidden sm:block text-[9px] sm:text-[11px] font-semibold mt-1 whitespace-nowrap transition-colors duration-300 ${
+                          isSelected ? "font-bold" : "text-[var(--text-muted)]"
+                        }`}
+                        style={{ color: isSelected ? currentColor.mid : undefined }}
+                      >
                         {item.name}
                       </span>
                     </motion.div>
