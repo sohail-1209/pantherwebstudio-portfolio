@@ -68,7 +68,7 @@ export default function Navigation() {
         <Link href="/" className="flex items-center space-x-3 group">
           <div className="bg-[var(--logo-bg)] w-10 h-10 rounded-full overflow-hidden border border-[#8b5cf6]/50 shadow-[0_0_15px_rgba(139,92,246,0.35)] group-hover:scale-105 transition-transform relative p-1">
             <Image
-              src="/only panther.png"
+              src="/panther.png"
               alt="Panther Web Studio Logo"
               fill
               sizes="40px"

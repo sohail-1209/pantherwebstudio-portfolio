@@ -12,7 +12,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center space-x-3 mb-4 group inline-flex">
               <div className="w-10 h-10 rounded-full overflow-hidden relative bg-[var(--logo-bg)] border border-[#8b5cf6]/50 shadow-md">
                 <Image
-                  src="/only panther.png"
+                  src="/panther.png"
                   alt="Panther Web Studio"
                   fill
                   sizes="40px"

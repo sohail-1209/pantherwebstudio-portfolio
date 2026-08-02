@@ -39,7 +39,7 @@ export default function Loader({ onComplete }: { onComplete: () => void }) {
             transition={{ duration: 0.6, ease: "backOut" }}
           >
             <Image
-              src="/only panther.png"
+              src="/panther.png"
               alt="Panther Web Studio"
               fill
               sizes="112px"
