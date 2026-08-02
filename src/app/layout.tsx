@@ -28,6 +28,9 @@ export const metadata: Metadata = {
   title: "Panther Web Studio | Premium Website Development Agency",
   description: "We build premium Websites, Web Applications, PWAs and SEO optimized business solutions.",
   keywords: ["Website Development", "Web Design", "Web Applications", "PWA", "SEO", "UI UX", "React", "Next.js", "Business Website", "Portfolio Website", "Landing Page", "Digital Agency"],
+  verification: {
+    google: "googlef731671fbeb5ff39",
+  },
 };
 
 export default function RootLayout({
