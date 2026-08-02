@@ -135,8 +135,8 @@ export default function Services() {
             <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
-          {/* Orbit Wheel & Central Mockup Card Container */}
-          <div className="relative w-[320px] h-[320px] xs:w-[360px] xs:h-[360px] sm:w-[500px] sm:h-[500px] md:w-[640px] md:h-[640px] lg:w-[740px] lg:h-[740px] flex items-center justify-center mx-auto">
+          {/* Orbit Wheel & Central Mockup Card Container - Generous size for mobile & desktop */}
+          <div className="relative w-[350px] h-[350px] xs:w-[380px] xs:h-[380px] sm:w-[500px] sm:h-[500px] md:w-[640px] md:h-[640px] lg:w-[740px] lg:h-[740px] flex items-center justify-center mx-auto">
             
             {/* Perfectly Centered SVG Connecting Interactive Arc & Rings */}
             <svg 
@@ -186,8 +186,8 @@ export default function Services() {
               />
             </svg>
 
-            {/* Central Service Glass Mockup Card - Scaled down for mobile fit */}
-            <div className="absolute z-20 w-[185px] xs:w-[205px] sm:w-[310px] md:w-[380px] lg:w-[420px] bg-[var(--surface)]/95 backdrop-blur-2xl border border-[var(--glass-border)] rounded-2xl sm:rounded-3xl p-2.5 sm:p-5 md:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex flex-col items-center text-left">
+            {/* Central Service Glass Mockup Card */}
+            <div className="absolute z-20 w-[220px] xs:w-[250px] sm:w-[330px] md:w-[390px] lg:w-[430px] bg-[var(--surface)]/95 backdrop-blur-2xl border border-[var(--glass-border)] rounded-2xl sm:rounded-3xl p-3 sm:p-5 md:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex flex-col items-center text-left">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeIndex}
@@ -198,26 +198,26 @@ export default function Services() {
                   className="w-full flex flex-col items-center"
                 >
                   {/* Top Glowing Icon Badge */}
-                  <div className="w-6 h-6 sm:w-11 sm:h-11 rounded-full bg-[#8b5cf6]/15 border border-[#8b5cf6]/40 flex items-center justify-center text-[#8b5cf6] mb-1 sm:mb-2.5 shadow-[0_0_12px_rgba(139,92,246,0.3)] flex-shrink-0">
+                  <div className="w-7 h-7 sm:w-11 sm:h-11 rounded-full bg-[#8b5cf6]/15 border border-[#8b5cf6]/40 flex items-center justify-center text-[#8b5cf6] mb-1 sm:mb-2.5 shadow-[0_0_12px_rgba(139,92,246,0.3)] flex-shrink-0">
                     {(() => {
                       const IconComponent = services[activeIndex].icon;
-                      return <IconComponent className="w-3 h-3 sm:w-5 sm:h-5" />;
+                      return <IconComponent className="w-3.5 h-3.5 sm:w-5 sm:h-5" />;
                     })()}
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-[10.5px] sm:text-base md:text-lg font-bold text-[var(--foreground)] mb-0.5 text-center leading-tight">
+                  <h3 className="text-xs sm:text-base md:text-lg font-bold text-[var(--foreground)] mb-0.5 text-center leading-tight">
                     <span className="text-[#8b5cf6] mr-1">–</span>
                     {services[activeIndex].name}
                   </h3>
-                  <p className="text-[8px] sm:text-xs text-[var(--text-muted)] text-center leading-tight mb-1.5 max-w-xs line-clamp-2">
+                  <p className="text-[8.5px] sm:text-xs text-[var(--text-muted)] text-center leading-tight mb-2 max-w-xs line-clamp-2">
                     {services[activeIndex].desc}
                   </p>
 
-                  {/* Card Content Grid: Left Bullet Points, Right Preview Mockup Image */}
-                  <div className="grid grid-cols-2 sm:grid-cols-12 gap-1 sm:gap-3 w-full items-center mb-2 sm:mb-4">
-                    {/* Bullet Points */}
-                    <div className="col-span-2 sm:col-span-6 grid grid-cols-2 sm:grid-cols-1 gap-1">
+                  {/* Card Content Grid: 4 Bullet Points on Left, Preview Mockup Image on Right */}
+                  <div className="grid grid-cols-12 gap-2 sm:gap-3 w-full items-center mb-2.5 sm:mb-4">
+                    {/* Left Bullet Points (4 Points Stacked Vertically) */}
+                    <div className="col-span-6 space-y-1 sm:space-y-1.5">
                       {services[activeIndex].features.map((feat, idx) => (
                         <div key={idx} className="flex items-center gap-1">
                           <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#8b5cf6]/20 flex items-center justify-center text-[#8b5cf6] flex-shrink-0">
@@ -230,9 +230,9 @@ export default function Services() {
                       ))}
                     </div>
 
-                    {/* Right Laptop Frame Preview Image */}
-                    <div className="hidden sm:block sm:col-span-6">
-                      <div className="relative w-full h-20 sm:h-24 rounded-xl overflow-hidden border border-[var(--glass-border)] shadow-md bg-[var(--background)] group">
+                    {/* Right Laptop Frame Preview Image (Visible on ALL screens) */}
+                    <div className="col-span-6">
+                      <div className="relative w-full h-16 xs:h-20 sm:h-24 rounded-lg sm:rounded-xl overflow-hidden border border-[var(--glass-border)] shadow-md bg-[var(--background)] group">
                         <img
                           src={services[activeIndex].image}
                           alt={services[activeIndex].name}
@@ -244,17 +244,17 @@ export default function Services() {
                   </div>
 
                   {/* Action Buttons Inside Card */}
-                  <div className="flex flex-row items-center justify-center gap-1 sm:gap-2.5 w-full">
+                  <div className="flex flex-row items-center justify-center gap-1.5 sm:gap-2.5 w-full">
                     <Link
                       href="#portfolio"
-                      className="px-2 py-1 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#7c3aed] to-[#8b5cf6] text-white text-[8.5px] sm:text-xs font-semibold shadow-[0_0_10px_rgba(139,92,246,0.35)] hover:shadow-[0_0_18px_rgba(139,92,246,0.5)] flex items-center gap-0.5 transition-all hover:scale-105"
+                      className="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-[#7c3aed] to-[#8b5cf6] text-white text-[9px] sm:text-xs font-semibold shadow-[0_0_10px_rgba(139,92,246,0.35)] hover:shadow-[0_0_18px_rgba(139,92,246,0.5)] flex items-center gap-0.5 transition-all hover:scale-105"
                     >
                       <span>View Projects</span>
                       <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                     </Link>
                     <Link
                       href="#contact"
-                      className="px-2 py-1 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl bg-[var(--surface-hover)] border border-[var(--glass-border)] text-[var(--foreground)] text-[8.5px] sm:text-xs font-semibold hover:border-[#8b5cf6] flex items-center gap-0.5 transition-all hover:scale-105"
+                      className="px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-[var(--surface-hover)] border border-[var(--glass-border)] text-[var(--foreground)] text-[9px] sm:text-xs font-semibold hover:border-[#8b5cf6] flex items-center gap-0.5 transition-all hover:scale-105"
                     >
                       <span>Get Quote</span>
                       <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#8b5cf6]" />
@@ -262,13 +262,13 @@ export default function Services() {
                   </div>
 
                   {/* Pagination Dots */}
-                  <div className="flex items-center gap-1 sm:gap-1.5 mt-1.5 sm:mt-3">
+                  <div className="flex items-center gap-1 sm:gap-1.5 mt-2 sm:mt-3">
                     {services.map((_, i) => (
                       <button
                         key={i}
                         onClick={() => setActiveIndex(i)}
                         className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 ${
-                          i === activeIndex ? "w-3 sm:w-4 bg-[#8b5cf6]" : "w-1 sm:w-1.5 bg-[var(--text-muted)]/40"
+                          i === activeIndex ? "w-3.5 sm:w-4 bg-[#8b5cf6]" : "w-1 sm:w-1.5 bg-[var(--text-muted)]/40"
                         }`}
                       />
                     ))}
@@ -297,16 +297,16 @@ export default function Services() {
                   >
                     <style jsx>{`
                       div {
-                        --orbit-radius: 135px;
+                        --orbit-radius: 155px;
                       }
                       @media (min-width: 380px) {
                         div {
-                          --orbit-radius: 148px;
+                          --orbit-radius: 168px;
                         }
                       }
                       @media (min-width: 640px) {
                         div {
-                          --orbit-radius: 205px;
+                          --orbit-radius: 215px;
                         }
                       }
                       @media (min-width: 768px) {
