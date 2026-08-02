@@ -47,8 +47,13 @@ body {
   background: var(--background);
   color: var(--foreground);
   overflow-x: hidden;
-  cursor: none;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@media (pointer: fine) {
+  body {
+    cursor: none;
+  }
 }
 
 /* Glassmorphism Utilities */

@@ -149,6 +149,15 @@ const DotField = memo<DotFieldProps>(({
       mouseRef.current.y = e.pageY - s.offsetY;
     }
 
+    function onTouchMove(e: TouchEvent) {
+      if (e.touches.length > 0) {
+        const s = sizeRef.current;
+        mouseRef.current.x = e.touches[0].pageX - s.offsetX;
+        mouseRef.current.y = e.touches[0].pageY - s.offsetY;
+        mouseRef.current.speed = 3;
+      }
+    }
+
     function updateMouseSpeed() {
       const m = mouseRef.current;
       const dx = m.prevX - m.x;
@@ -172,19 +181,33 @@ const DotField = memo<DotFieldProps>(({
       const { w, h } = sizeRef.current;
       const p = propsRef.current;
       const len = dots.length;
-      const t = frameCount * 0.02;
+      const t = frameCount * 0.025;
 
-      const targetEngagement = Math.min(m.speed / 5, 1);
-      engagement.current += (targetEngagement - engagement.current) * 0.06;
-      if (engagement.current < 0.001) engagement.current = 0;
-      const eng = engagement.current;
+      const isMobile = typeof window !== 'undefined' && ('ontouchstart' in window || window.matchMedia('(pointer: coarse)').matches);
 
-      glowOpacity.current += (eng - glowOpacity.current) * 0.08;
+      // Determine active cursor / wave center:
+      let activeX = m.x;
+      let activeY = m.y;
+      let activeEng = 0;
+
+      if (isMobile || m.x === -9999) {
+        // Continuous smooth floating orbit motion on mobile devices!
+        activeX = (Math.sin(t * 0.7) * 0.35 + 0.5) * w;
+        activeY = (Math.cos(t * 0.5) * 0.35 + 0.5) * h;
+        activeEng = 0.85;
+      } else {
+        const targetEngagement = Math.min(m.speed / 5, 1);
+        engagement.current += (targetEngagement - engagement.current) * 0.06;
+        if (engagement.current < 0.001) engagement.current = 0;
+        activeEng = engagement.current;
+      }
+
+      glowOpacity.current += (activeEng - glowOpacity.current) * 0.08;
 
       if (glowEl) {
-        glowEl.setAttribute('cx', String(m.x));
-        glowEl.setAttribute('cy', String(m.y));
-        glowEl.style.opacity = String(glowOpacity.current);
+        glowEl.setAttribute('cx', String(activeX));
+        glowEl.setAttribute('cy', String(activeY));
+        glowEl.style.opacity = String(glowOpacity.current * 0.6);
       }
 
       ctx.clearRect(0, 0, w, h);
@@ -204,15 +227,15 @@ const DotField = memo<DotFieldProps>(({
       for (let i = 0; i < len; i++) {
         const d = dots[i];
         if (!d) continue;
-        const dx = m.x - d.ax;
-        const dy = m.y - d.ay;
+        const dx = activeX - d.ax;
+        const dy = activeY - d.ay;
         const distSq = dx * dx + dy * dy;
 
-        if (distSq < crSq && eng > 0.01) {
+        if (distSq < crSq && activeEng > 0.01) {
           const dist = Math.sqrt(distSq);
           if (isBulge) {
-            const t = 1 - dist / cr;
-            const push = t * t * p.bulgeStrength * eng;
+            const factor = 1 - dist / cr;
+            const push = factor * factor * p.bulgeStrength * activeEng;
             const angle = Math.atan2(dy, dx);
             d.sx += (d.ax - Math.cos(angle) * push - d.sx) * 0.15;
             d.sy += (d.ay - Math.sin(angle) * push - d.sy) * 0.15;
@@ -239,8 +262,8 @@ const DotField = memo<DotFieldProps>(({
         let drawX = d.sx;
         let drawY = d.sy;
         if (p.waveAmplitude > 0) {
-          drawY += Math.sin(d.ax * 0.03 + t) * p.waveAmplitude;
-          drawX += Math.cos(d.ay * 0.03 + t * 0.7) * p.waveAmplitude * 0.5;
+          drawY += Math.sin(d.ax * 0.03 + t) * p.waveAmplitude * (isMobile ? 1.8 : 1.0);
+          drawX += Math.cos(d.ay * 0.03 + t * 0.7) * p.waveAmplitude * (isMobile ? 1.2 : 0.5);
         }
 
         if (p.sparkle) {
@@ -266,6 +289,8 @@ const DotField = memo<DotFieldProps>(({
     doResize();
     window.addEventListener('resize', resize);
     window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('touchstart', onTouchMove, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
     rafRef.current = requestAnimationFrame(tick);
 
     rebuildRef.current = () => {
@@ -279,6 +304,8 @@ const DotField = memo<DotFieldProps>(({
       clearTimeout(resizeTimer);
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('touchstart', onTouchMove);
+      window.removeEventListener('touchmove', onTouchMove);
     };
   }, []);
 

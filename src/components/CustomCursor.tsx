@@ -7,8 +7,19 @@ export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(true);
 
   useEffect(() => {
+    // Detect if device is touch or coarse pointer
+    const checkTouch = () => {
+      const isCoarse = window.matchMedia("(pointer: coarse)").matches;
+      const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+      setIsTouchDevice(isCoarse || hasTouch);
+    };
+
+    checkTouch();
+    window.addEventListener("resize", checkTouch);
+
     const updateMousePosition = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
       if (!isVisible) setIsVisible(true);
@@ -38,17 +49,19 @@ export default function CustomCursor() {
     document.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
+      window.removeEventListener("resize", checkTouch);
       window.removeEventListener("mousemove", updateMousePosition);
       window.removeEventListener("mouseover", handleMouseOver);
       document.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, [isVisible]);
 
-  if (!isVisible) return null;
+  // Completely disable custom cursor on mobile / touch devices
+  if (isTouchDevice || !isVisible) return null;
 
   return (
     <>
-      {/* Inner Dot - Highest Z-Index (z-[99999]) to stay above Navbar and all UI elements */}
+      {/* Inner Dot - Highest Z-Index (z-[99999]) */}
       <motion.div
         className="fixed top-0 left-0 w-3.5 h-3.5 bg-[#a78bfa] rounded-full pointer-events-none z-[99999] shadow-[0_0_12px_#8b5cf6]"
         animate={{
