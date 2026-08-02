@@ -25,7 +25,7 @@
   --glass-border: rgba(167, 139, 250, 0.18);
   --card-bg: rgba(31, 30, 44, 0.65);
   --card-border: rgba(167, 139, 250, 0.18);
-  --logo-bg: #c09ef7;
+  --logo-bg: #e5d7fc;
 }
 
 html.light {
@@ -40,7 +40,7 @@ html.light {
   --glass-border: rgba(124, 58, 237, 0.2);
   --card-bg: rgba(255, 255, 255, 0.85);
   --card-border: rgba(124, 58, 237, 0.2);
-  --logo-bg: #c09ef7;
+  --logo-bg: #e5d7fc;
 }
 
 body {
