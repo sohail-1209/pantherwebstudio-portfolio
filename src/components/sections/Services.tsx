@@ -136,50 +136,50 @@ export default function Services() {
           </button>
 
           {/* Orbit Wheel & Central Mockup Card Container */}
-          <div className="relative w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] md:w-[620px] md:h-[620px] lg:w-[720px] lg:h-[720px] flex items-center justify-center mx-auto">
+          <div className="relative w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] md:w-[640px] md:h-[640px] lg:w-[740px] lg:h-[740px] flex items-center justify-center mx-auto">
             
             {/* Translucent Guide Orbit Rings */}
             <div className="absolute inset-4 rounded-full border border-[var(--glass-border)] pointer-events-none shadow-sm" />
             <div className="absolute inset-16 sm:inset-20 rounded-full border border-dashed border-[var(--glass-border)] pointer-events-none opacity-50" />
 
-            {/* Central Service Glass Mockup Card */}
-            <div className="absolute z-20 w-[270px] sm:w-[380px] md:w-[460px] lg:w-[520px] bg-[var(--surface)]/95 backdrop-blur-2xl border border-[var(--glass-border)] rounded-3xl p-5 sm:p-7 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex flex-col items-center text-left">
+            {/* Central Service Glass Mockup Card - Scaled down for perfect spacing */}
+            <div className="absolute z-20 w-[245px] sm:w-[330px] md:w-[390px] lg:w-[430px] bg-[var(--surface)]/95 backdrop-blur-2xl border border-[var(--glass-border)] rounded-3xl p-4 sm:p-5 md:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex flex-col items-center text-left">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeIndex}
-                  initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                  initial={{ opacity: 0, y: 12, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -15, scale: 0.95 }}
+                  exit={{ opacity: 0, y: -12, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
                   className="w-full flex flex-col items-center"
                 >
                   {/* Top Glowing Icon Badge */}
-                  <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-[#8b5cf6]/15 border border-[#8b5cf6]/40 flex items-center justify-center text-[#8b5cf6] mb-3 shadow-[0_0_20px_rgba(139,92,246,0.3)]">
+                  <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-[#8b5cf6]/15 border border-[#8b5cf6]/40 flex items-center justify-center text-[#8b5cf6] mb-2.5 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
                     {(() => {
                       const IconComponent = services[activeIndex].icon;
-                      return <IconComponent className="w-5 h-5 sm:w-6 sm:h-6" />;
+                      return <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />;
                     })()}
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-base sm:text-xl md:text-2xl font-bold text-[var(--foreground)] mb-1 text-center">
+                  <h3 className="text-sm sm:text-base md:text-lg font-bold text-[var(--foreground)] mb-1 text-center leading-snug">
                     <span className="text-[#8b5cf6] mr-1.5">–</span>
                     {services[activeIndex].name}
                   </h3>
-                  <p className="text-[11px] sm:text-xs md:text-sm text-[var(--text-muted)] text-center leading-relaxed mb-4 max-w-sm">
+                  <p className="text-[10px] sm:text-xs text-[var(--text-muted)] text-center leading-relaxed mb-3 max-w-xs">
                     {services[activeIndex].desc}
                   </p>
 
                   {/* Card Content Grid: Left Bullet Points, Right Preview Mockup Image */}
-                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 w-full items-center mb-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 w-full items-center mb-4">
                     {/* Bullet Points */}
-                    <div className="sm:col-span-6 space-y-2">
+                    <div className="sm:col-span-6 space-y-1.5">
                       {services[activeIndex].features.map((feat, idx) => (
-                        <div key={idx} className="flex items-center gap-2">
-                          <div className="w-4 h-4 rounded-full bg-[#8b5cf6]/20 flex items-center justify-center text-[#8b5cf6] flex-shrink-0">
+                        <div key={idx} className="flex items-center gap-1.5">
+                          <div className="w-3.5 h-3.5 rounded-full bg-[#8b5cf6]/20 flex items-center justify-center text-[#8b5cf6] flex-shrink-0">
                             <Check className="w-2.5 h-2.5 stroke-[3]" />
                           </div>
-                          <span className="text-[11px] sm:text-xs font-medium text-[var(--foreground)]">
+                          <span className="text-[10px] sm:text-[11px] font-medium text-[var(--foreground)]">
                             {feat}
                           </span>
                         </div>
@@ -188,7 +188,7 @@ export default function Services() {
 
                     {/* Right Laptop Frame Preview Image */}
                     <div className="hidden sm:block sm:col-span-6">
-                      <div className="relative w-full h-28 sm:h-32 rounded-xl overflow-hidden border border-[var(--glass-border)] shadow-md bg-[var(--background)] group">
+                      <div className="relative w-full h-20 sm:h-24 rounded-xl overflow-hidden border border-[var(--glass-border)] shadow-md bg-[var(--background)] group">
                         <img
                           src={services[activeIndex].image}
                           alt={services[activeIndex].name}
@@ -200,31 +200,31 @@ export default function Services() {
                   </div>
 
                   {/* Action Buttons Inside Card */}
-                  <div className="flex flex-row items-center justify-center gap-3 w-full">
+                  <div className="flex flex-row items-center justify-center gap-2.5 w-full">
                     <Link
                       href="#portfolio"
-                      className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#7c3aed] to-[#8b5cf6] text-white text-xs sm:text-sm font-semibold shadow-[0_0_15px_rgba(139,92,246,0.4)] hover:shadow-[0_0_25px_rgba(139,92,246,0.6)] flex items-center gap-1.5 transition-all hover:scale-105"
+                      className="px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-[#7c3aed] to-[#8b5cf6] text-white text-[11px] sm:text-xs font-semibold shadow-[0_0_15px_rgba(139,92,246,0.35)] hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] flex items-center gap-1 transition-all hover:scale-105"
                     >
                       <span>View Projects</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <ArrowRight className="w-3 h-3" />
                     </Link>
                     <Link
                       href="#contact"
-                      className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-[var(--surface-hover)] border border-[var(--glass-border)] text-[var(--foreground)] text-xs sm:text-sm font-semibold hover:border-[#8b5cf6] flex items-center gap-1.5 transition-all hover:scale-105"
+                      className="px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-[var(--surface-hover)] border border-[var(--glass-border)] text-[var(--foreground)] text-[11px] sm:text-xs font-semibold hover:border-[#8b5cf6] flex items-center gap-1 transition-all hover:scale-105"
                     >
                       <span>Get Quote</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-[#8b5cf6]" />
+                      <ArrowRight className="w-3 h-3 text-[#8b5cf6]" />
                     </Link>
                   </div>
 
                   {/* Pagination Dots */}
-                  <div className="flex items-center gap-1.5 mt-4">
+                  <div className="flex items-center gap-1.5 mt-3">
                     {services.map((_, i) => (
                       <button
                         key={i}
                         onClick={() => setActiveIndex(i)}
                         className={`h-1.5 rounded-full transition-all duration-300 ${
-                          i === activeIndex ? "w-5 bg-[#8b5cf6]" : "w-1.5 bg-[var(--text-muted)]/40"
+                          i === activeIndex ? "w-4 bg-[#8b5cf6]" : "w-1.5 bg-[var(--text-muted)]/40"
                         }`}
                       />
                     ))}
@@ -248,26 +248,26 @@ export default function Services() {
                     key={item.name}
                     className="absolute pointer-events-auto"
                     style={{
-                      transform: `rotate(${baseAngle}deg) translate(var(--orbit-radius, 290px)) rotate(-${baseAngle}deg)`,
+                      transform: `rotate(${baseAngle}deg) translate(var(--orbit-radius, 315px)) rotate(-${baseAngle}deg)`,
                     }}
                   >
                     <style jsx>{`
                       div {
-                        --orbit-radius: 140px;
+                        --orbit-radius: 145px;
                       }
                       @media (min-width: 640px) {
                         div {
-                          --orbit-radius: 205px;
+                          --orbit-radius: 215px;
                         }
                       }
                       @media (min-width: 768px) {
                         div {
-                          --orbit-radius: 255px;
+                          --orbit-radius: 265px;
                         }
                       }
                       @media (min-width: 1024px) {
                         div {
-                          --orbit-radius: 300px;
+                          --orbit-radius: 315px;
                         }
                       }
                     `}</style>
