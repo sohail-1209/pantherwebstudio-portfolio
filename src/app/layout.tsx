@@ -25,7 +25,7 @@ const ethnocentric = localFont({
   display: 'swap',
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://pantherwebstudio.in';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://pantherwebstudio.vercel.app';
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),

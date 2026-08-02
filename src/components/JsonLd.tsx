@@ -1,5 +1,5 @@
 export default function JsonLd() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://pantherwebstudio.in';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://pantherwebstudio.vercel.app';
 
   const schemaData = {
     "@context": "https://schema.org",
