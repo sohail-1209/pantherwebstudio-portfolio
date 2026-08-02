@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   SiReact, SiNextdotjs, SiNodedotjs, SiExpress, 
@@ -26,6 +27,18 @@ const techRow2 = [
 ];
 
 function MarqueeRow({ items, direction = "left" }: { items: any[], direction?: "left" | "right" }) {
+  const [duration, setDuration] = useState(25);
+
+  useEffect(() => {
+    const updateSpeed = () => {
+      // Faster scrolling speed on mobile screens (12s on mobile, 25s on desktop)
+      setDuration(window.innerWidth < 768 ? 12 : 25);
+    };
+    updateSpeed();
+    window.addEventListener("resize", updateSpeed);
+    return () => window.removeEventListener("resize", updateSpeed);
+  }, []);
+
   return (
     <div className="flex w-full overflow-hidden whitespace-nowrap py-4 relative">
        {/* Fade edges */}
@@ -34,7 +47,7 @@ function MarqueeRow({ items, direction = "left" }: { items: any[], direction?: "
        
        <motion.div
          animate={{ x: direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"] }}
-         transition={{ duration: 30, ease: "linear", repeat: Infinity }}
+         transition={{ duration: duration, ease: "linear", repeat: Infinity }}
          className="flex gap-6 px-4 w-[200%]"
        >
           {[...items, ...items, ...items, ...items].map((tech, idx) => (

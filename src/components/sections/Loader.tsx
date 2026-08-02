@@ -33,17 +33,17 @@ export default function Loader({ onComplete }: { onComplete: () => void }) {
         >
           {/* Logo container with exact #9598c7 background */}
           <motion.div
-            className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden mb-6 relative flex items-center justify-center bg-[var(--logo-bg)] border-2 border-[#8b5cf6]/60 shadow-[0_0_30px_rgba(139,92,246,0.4)]"
+            className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden mb-6 relative flex items-center justify-center bg-[var(--logo-bg)] border-2 border-[#8b5cf6]/60 shadow-[0_0_30px_rgba(139,92,246,0.4)] p-3"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6, ease: "backOut" }}
           >
             <Image
-              src="/logo.png"
+              src="/only panther.png"
               alt="Panther Web Studio"
               fill
               sizes="112px"
-              className="object-cover z-10 p-1 rounded-full"
+              className="object-contain z-10 p-2"
               priority
             />
           </motion.div>

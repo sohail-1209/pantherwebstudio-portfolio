@@ -66,13 +66,13 @@ export default function Navigation() {
       <div className="container mx-auto px-6 flex justify-between items-center max-w-7xl">
         {/* Logo with #9598c7 Background */}
         <Link href="/" className="flex items-center space-x-3 group">
-          <div className="bg-[var(--logo-bg)] w-10 h-10 rounded-full overflow-hidden border border-[#8b5cf6]/50 shadow-[0_0_15px_rgba(139,92,246,0.35)] group-hover:scale-105 transition-transform relative p-0.5">
+          <div className="bg-[var(--logo-bg)] w-10 h-10 rounded-full overflow-hidden border border-[#8b5cf6]/50 shadow-[0_0_15px_rgba(139,92,246,0.35)] group-hover:scale-105 transition-transform relative p-1">
             <Image
-              src="/logo.png"
+              src="/only panther.png"
               alt="Panther Web Studio Logo"
               fill
               sizes="40px"
-              className="object-cover rounded-full"
+              className="object-contain"
             />
           </div>
           <span className="font-ethno font-bold text-lg tracking-wider text-[var(--foreground)]">

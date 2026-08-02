@@ -142,11 +142,11 @@ export default function Hero() {
                 {/* Logo background adapts smoothly with var(--logo-bg) */}
                 <div className="absolute inset-4 rounded-full overflow-hidden bg-[var(--logo-bg)] backdrop-blur-xl border border-[rgba(167,139,250,0.4)] shadow-[0_0_30px_rgba(139,92,246,0.4)] flex items-center justify-center transition-colors duration-300">
                   <Image
-                    src="/logo.png"
+                    src="/only panther.png"
                     alt="Panther Web Studio Logo"
                     fill
                     sizes="(max-width: 768px) 200px, 280px"
-                    className="object-cover p-2 rounded-full"
+                    className="object-contain p-3"
                     priority
                   />
                 </div>
