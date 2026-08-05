@@ -25,6 +25,15 @@ const projects = [
     link: "https://maseerareem.github.io/aura-salon",
     tags: ["HTML5", "CSS3", "JavaScript", "Responsive"],
   },
+  {
+    id: 3,
+    title: "Restaurant X - Sensory Gastronomy",
+    category: "Business",
+    description: "3 Michelin Star luxury fine dining experience featuring WhatsApp table reservations, interactive culinary menus, and avant-garde minimalist art.",
+    image: "/restaurant-x.png",
+    link: "https://restaurent-x.vercel.app",
+    tags: ["Next.js", "React", "Tailwind CSS", "WhatsApp API"],
+  },
 ];
 
 export default function Portfolio() {
@@ -101,8 +110,8 @@ export default function Portfolio() {
           ))}
         </motion.div>
 
-        {/* Glass Project Cards Grid - 2 Featured Projects */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        {/* Glass Project Cards Grid */}
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project) => (
               <motion.div
@@ -115,7 +124,7 @@ export default function Portfolio() {
                 className="group relative rounded-2xl overflow-hidden bg-[var(--surface)]/75 backdrop-blur-xl border border-[var(--glass-border)] hover:border-[#8b5cf6]/50 shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:shadow-[0_15px_40px_rgba(139,92,246,0.2)] transition-all duration-500 flex flex-col hover:-translate-y-1"
               >
                 {/* Image Container */}
-                <div className="relative h-60 sm:h-64 w-full overflow-hidden bg-[var(--background)]">
+                <div className="relative h-56 sm:h-60 w-full overflow-hidden bg-[var(--background)]">
                   <img
                     src={project.image}
                     alt={project.title}
@@ -132,21 +141,21 @@ export default function Portfolio() {
                 {/* Content */}
                 <div className="p-6 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="text-xl font-bold text-[var(--foreground)] group-hover:text-[#8b5cf6] transition-colors duration-300">
+                    <h3 className="text-lg sm:text-xl font-bold text-[var(--foreground)] group-hover:text-[#8b5cf6] transition-colors duration-300">
                       {project.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-2.5 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-2.5 leading-relaxed line-clamp-3">
                       {project.description}
                     </p>
                   </div>
 
                   {/* Tech Tags & Live Link */}
                   <div className="mt-6 pt-4 border-t border-[var(--glass-border)] flex items-center justify-between">
-                    <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                       {project.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-2.5 py-1 rounded-md bg-[var(--surface-hover)] border border-[var(--glass-border)] text-[11px] font-medium text-[#8b5cf6]"
+                          className="px-2.5 py-1 rounded-md bg-[var(--surface-hover)] border border-[var(--glass-border)] text-[10px] sm:text-[11px] font-medium text-[#8b5cf6]"
                         >
                           {tag}
                         </span>
@@ -157,7 +166,7 @@ export default function Portfolio() {
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-10 h-10 rounded-full bg-[#8b5cf6] text-white flex items-center justify-center transition-all duration-300 shadow-[0_0_15px_rgba(139,92,246,0.4)] hover:scale-110 flex-shrink-0 gap-1"
+                        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#8b5cf6] text-white flex items-center justify-center transition-all duration-300 shadow-[0_0_15px_rgba(139,92,246,0.4)] hover:scale-110 flex-shrink-0 gap-1"
                         title={`Visit ${project.title}`}
                       >
                         <ExternalLink className="w-4 h-4" />
